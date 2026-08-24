@@ -26,6 +26,7 @@ export class SettingsService {
       sessionsBeforeLongBreak: config.get<number>('sessionsBeforeLongBreak', 4),
       autoStartNextSession: config.get<boolean>('autoStartNextSession', false),
       enableNotifications: config.get<boolean>('enableNotifications', true),
+      enableNativeNotifications: config.get<boolean>('enableNativeNotifications', true),
       enableSound: config.get<boolean>('enableSound', true),
     };
   }

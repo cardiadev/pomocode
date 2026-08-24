@@ -2,7 +2,7 @@
   "name": "pomocode",
   "displayName": "PomoCode",
   "description": "A dynamic, friendly Pomodoro timer for VS Code with live stats, streaks, and session history.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publisher": "cardiadev",
   "license": "MIT",
   "private": true,
@@ -53,6 +53,10 @@
       {
         "command": "pomocode.openPanel",
         "title": "PomoCode: Open Panel"
+      },
+      {
+        "command": "pomocode.showQuickMenu",
+        "title": "PomoCode: Show Quick Menu"
       }
     ],
     "configuration": {
@@ -101,6 +105,12 @@
           "default": true,
           "scope": "window",
           "description": "Show a VS Code notification when a session starts, ends, or transitions."
+        },
+        "pomocode.enableNativeNotifications": {
+          "type": "boolean",
+          "default": true,
+          "scope": "window",
+          "description": "macOS only: also show a native system notification, so you see it even when VS Code is in the background."
         },
         "pomocode.enableSound": {
           "type": "boolean",
