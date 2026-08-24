@@ -3,7 +3,8 @@ import type { HostMessage, PomoCodeSettings, TimerCommand, WebviewMessage } from
 import type { TimerEngine } from '../timer/timerEngine';
 import type { SettingsService } from '../storage/settingsService';
 import type { HistoryStore } from '../storage/historyStore';
-import { computeStats } from '../storage/statsUtils';
+import type { GoalsStore } from '../storage/goalsStore';
+import { computeStats } from '../../shared/statsUtils';
 import { buildPanelHtml } from './html';
 
 export class PanelProvider implements vscode.WebviewViewProvider {
@@ -14,6 +15,7 @@ export class PanelProvider implements vscode.WebviewViewProvider {
     private readonly timerEngine: TimerEngine,
     private readonly settingsService: SettingsService,
     private readonly historyStore: HistoryStore,
+    private readonly goalsStore: GoalsStore,
   ) {}
 
   resolveWebviewView(webviewView: vscode.WebviewView): void {
@@ -47,6 +49,18 @@ export class PanelProvider implements vscode.WebviewViewProvider {
         return;
       case 'settings/update':
         this.handleSettingsUpdate(message.payload);
+        return;
+      case 'goals/add':
+        void this.goalsStore.add(message.payload.text);
+        return;
+      case 'goals/toggle':
+        void this.goalsStore.toggle(message.payload.id);
+        return;
+      case 'goals/remove':
+        void this.goalsStore.remove(message.payload.id);
+        return;
+      case 'openExternal':
+        void vscode.env.openExternal(vscode.Uri.parse(message.payload.url));
         return;
     }
   }
@@ -83,5 +97,6 @@ export class PanelProvider implements vscode.WebviewViewProvider {
     this.postMessage({ type: 'settings/sync', payload: this.settingsService.read() });
     const entries = this.historyStore.getAll();
     this.postMessage({ type: 'history/sync', payload: { entries, stats: computeStats(entries) } });
+    this.postMessage({ type: 'goals/sync', payload: this.goalsStore.getAll() });
   }
 }
