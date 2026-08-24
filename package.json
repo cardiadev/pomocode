@@ -1,0 +1,155 @@
+{
+  "name": "pomocode",
+  "displayName": "PomoCode",
+  "description": "A dynamic, friendly Pomodoro timer for VS Code with live stats, streaks, and session history.",
+  "version": "0.1.0",
+  "publisher": "cardiadev",
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cardiadev/pomocode.git"
+  },
+  "engines": {
+    "vscode": "^1.134.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "pomodoro",
+    "timer",
+    "productivity",
+    "focus",
+    "break"
+  ],
+  "icon": "assets/icons/pomocode-icon.png",
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "pomocode.start",
+        "title": "PomoCode: Start Focus Session"
+      },
+      {
+        "command": "pomocode.pause",
+        "title": "PomoCode: Pause Timer"
+      },
+      {
+        "command": "pomocode.resume",
+        "title": "PomoCode: Resume Timer"
+      },
+      {
+        "command": "pomocode.reset",
+        "title": "PomoCode: Reset Timer"
+      },
+      {
+        "command": "pomocode.skip",
+        "title": "PomoCode: Skip to Next Session"
+      },
+      {
+        "command": "pomocode.openPanel",
+        "title": "PomoCode: Open Panel"
+      }
+    ],
+    "configuration": {
+      "title": "PomoCode",
+      "properties": {
+        "pomocode.focusDuration": {
+          "type": "number",
+          "default": 25,
+          "minimum": 1,
+          "maximum": 180,
+          "scope": "window",
+          "description": "Length of a focus session, in minutes."
+        },
+        "pomocode.shortBreakDuration": {
+          "type": "number",
+          "default": 5,
+          "minimum": 1,
+          "maximum": 60,
+          "scope": "window",
+          "description": "Length of a short break, in minutes."
+        },
+        "pomocode.longBreakDuration": {
+          "type": "number",
+          "default": 15,
+          "minimum": 1,
+          "maximum": 120,
+          "scope": "window",
+          "description": "Length of a long break, in minutes."
+        },
+        "pomocode.sessionsBeforeLongBreak": {
+          "type": "number",
+          "default": 4,
+          "minimum": 1,
+          "maximum": 12,
+          "scope": "window",
+          "description": "Number of focus sessions before a long break is triggered."
+        },
+        "pomocode.autoStartNextSession": {
+          "type": "boolean",
+          "default": false,
+          "scope": "window",
+          "description": "Automatically start the next session when the current one ends."
+        },
+        "pomocode.enableNotifications": {
+          "type": "boolean",
+          "default": true,
+          "scope": "window",
+          "description": "Show a VS Code notification when a session starts, ends, or transitions."
+        },
+        "pomocode.enableSound": {
+          "type": "boolean",
+          "default": true,
+          "scope": "window",
+          "description": "Play a sound in the PomoCode panel when a session ends."
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "pomocode",
+          "title": "PomoCode",
+          "icon": "assets/icons/activity-bar-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "pomocode": [
+        {
+          "type": "webview",
+          "id": "pomocode.panelView",
+          "name": "Timer"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "dev": "bun run scripts/watch.ts",
+    "build": "bun run scripts/build.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p webview-ui/tsconfig.json",
+    "lint": "oxlint",
+    "check": "bun run lint && bun run typecheck",
+    "package": "bun run build && bunx @vscode/vsce package --no-yarn"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "@types/vscode": "^1.134.0",
+    "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.28.2",
+    "oxlint": "^1.80.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "typescript": "^7.0.2"
+  },
+  "trustedDependencies": [
+    "@vscode/vsce-sign"
+  ]
+}

@@ -1,0 +1,15 @@
+.vscode/**
+src/**
+webview-ui/src/**
+webview-ui/tsconfig.json
+shared/**
+scripts/**
+**/*.ts
+**/*.tsx
+tsconfig*.json
+.oxlintrc.json
+node_modules/**
+.github/**
+.gitignore
+bun.lock
+*.vsix
