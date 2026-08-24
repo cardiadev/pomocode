@@ -4,11 +4,13 @@ A dynamic, friendly Pomodoro timer for VS Code with live stats, streaks, and ses
 
 ## Features
 
-- **Minimal status bar timer** — always visible, click it to open the panel.
-- **Activity Bar panel** — a dedicated PomoCode icon opens a full panel with the timer, session controls, history, streaks, and stats.
-- **Native notifications** — VS Code notifications announce when a session starts and ends.
+- **Minimal status bar timer** — always visible; click it to open a quick-actions menu (start, pause, resume, skip, reset, or open the panel).
+- **Activity Bar panel** — a dedicated PomoCode icon opens a full panel with the timer, session controls, goals, history, streaks, and stats.
+- **Goals** — jot down what you're working towards and check them off, independent of your Pomodoro sessions.
+- **Streak calendar & badges** — click the streak badge for a Duolingo-style monthly calendar of your active days, plus unlockable milestone badges to keep you motivated.
+- **Notifications** — VS Code notifications announce when a session starts and ends, with an optional native macOS notification so you still see it when VS Code is in the background.
 - **Fully customizable** — durations, auto-start, notifications, and sound are all configurable from VS Code Settings or directly from the panel, kept in sync both ways.
-- **Per-profile isolation** — settings and history are scoped to your active VS Code Profile, so switching profiles gives you a clean, independent PomoCode state.
+- **Per-profile isolation** — settings, history, and goals are scoped to your active VS Code Profile, so switching profiles gives you a clean, independent PomoCode state.
 - **Session history & stats** — every completed session is recorded; the panel shows today/week/all-time counts and focused minutes, plus your current daily streak.
 - **Themed to match VS Code** — the panel follows your active color theme automatically (light, dark, or high contrast), using the self-hosted Inter font.
 
@@ -18,7 +20,7 @@ A dynamic, friendly Pomodoro timer for VS Code with live stats, streaks, and ses
 2. Press **Start** to begin a focus session.
 3. When a session ends, PomoCode shows a notification and automatically moves to the next session (break or focus), unless you've disabled auto-start.
 
-You can also control PomoCode from the Command Palette:
+Click the status bar timer any time for a quick menu of actions, or use the Command Palette:
 
 - `PomoCode: Start Focus Session`
 - `PomoCode: Pause Timer`
@@ -26,6 +28,7 @@ You can also control PomoCode from the Command Palette:
 - `PomoCode: Reset Timer`
 - `PomoCode: Skip to Next Session`
 - `PomoCode: Open Panel`
+- `PomoCode: Show Quick Menu`
 
 ## Settings
 
@@ -39,13 +42,14 @@ All settings are available under **Settings → Extensions → PomoCode**, or di
 | `pomocode.sessionsBeforeLongBreak` | `4` | Number of focus sessions before a long break is triggered. |
 | `pomocode.autoStartNextSession` | `false` | Automatically start the next session when the current one ends. |
 | `pomocode.enableNotifications` | `true` | Show a VS Code notification on session start/end. |
+| `pomocode.enableNativeNotifications` | `true` | macOS only: also show a native system notification, so you see it even when VS Code is in the background. |
 | `pomocode.enableSound` | `true` | Play a sound in the panel when a session ends. |
 
-Settings and session history respect VS Code's **Profiles** feature: each profile keeps its own independent PomoCode configuration and history.
+Settings, session history, and goals respect VS Code's **Profiles** feature: each profile keeps its own independent PomoCode state.
 
 ## A note on sound
 
-PomoCode doesn't ship an audio file. Instead, it synthesizes a short beep in the panel using the Web Audio API when a session ends. This keeps the extension lightweight and avoids any font/audio licensing concerns, but it means **the sound only plays while the PomoCode panel has been opened at least once in the current window** — the visual notification always works regardless of panel state.
+PomoCode doesn't ship an audio file. Instead, it synthesizes a short beep in the panel using the Web Audio API when a session ends. This keeps the extension lightweight and avoids any font/audio licensing concerns. Browsers only allow audio to start after a user gesture, so PomoCode "unlocks" its audio context the first time you click anything in the panel (e.g. pressing Start) — as long as you've clicked once, the beep will play on every future session completion. The sound only plays while the PomoCode panel has been opened at least once in the current window; the visual/native notification always works regardless of panel state.
 
 ## Development
 

@@ -2,6 +2,24 @@
 
 All notable changes to PomoCode are documented in this file.
 
+## [0.2.0] - 2026-08-24
+
+### Added
+
+- Goals section in the panel to track what you're working towards, independent of Pomodoro sessions.
+- Duolingo-style streak calendar and badges: click the streak badge to see a monthly activity calendar and unlockable milestone badges.
+- Status bar click now opens a quick-actions menu (start/pause/resume/skip/reset/open panel) instead of only opening the panel.
+- Native macOS notifications (via `enableNativeNotifications`) so session alerts show up even when VS Code is in the background.
+- Footer credit linking to the developer's GitHub profile.
+
+### Changed
+
+- Reordered the panel so History sits below Settings, since an unbounded history list would otherwise keep pushing Settings further down.
+
+### Fixed
+
+- The session-completion beep now reliably plays: the shared `AudioContext` is unlocked on the first click/tap in the panel, working around browsers' autoplay policy that silently suspends audio started without a user gesture.
+
 ## [0.1.0] - 2026-08-24
 
 ### Added
