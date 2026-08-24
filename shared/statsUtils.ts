@@ -1,6 +1,6 @@
-import type { HistoryEntry, StatsSnapshot } from '../../shared/protocol';
+import type { HistoryEntry, StatsSnapshot } from './protocol';
 
-function toLocalDayKey(isoDate: string): string {
+export function toLocalDayKey(isoDate: string): string {
   const date = new Date(isoDate);
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -27,6 +27,16 @@ function computeStreakDays(completedFocusDayKeys: Set<string>): number {
   }
 
   return streak;
+}
+
+export function getCompletedFocusDayKeys(entries: HistoryEntry[]): Set<string> {
+  const keys = new Set<string>();
+  for (const entry of entries) {
+    if (entry.type === 'focus' && entry.completed) {
+      keys.add(toLocalDayKey(entry.endedAt));
+    }
+  }
+  return keys;
 }
 
 export function computeStats(entries: HistoryEntry[]): StatsSnapshot {
