@@ -24,7 +24,7 @@ export class StatusBarController implements vscode.Disposable {
 
   constructor() {
     this.item = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
-    this.item.command = 'pomocode.openPanel';
+    this.item.command = 'pomocode.showQuickMenu';
     this.item.name = 'PomoCode';
     this.render({
       status: 'idle',
@@ -43,14 +43,14 @@ export class StatusBarController implements vscode.Disposable {
 
     if (snapshot.status === 'idle') {
       this.item.text = `${icon} PomoCode`;
-      this.item.tooltip = 'PomoCode: click to open the panel and start a session.';
+      this.item.tooltip = 'PomoCode: click for quick actions.';
       return;
     }
 
     const time = formatTime(snapshot.remainingSeconds);
     const statusSuffix = snapshot.status === 'paused' ? ' (paused)' : '';
     this.item.text = `${icon} ${time} ${label}${statusSuffix}`;
-    this.item.tooltip = 'PomoCode: click to open the panel.';
+    this.item.tooltip = 'PomoCode: click for quick actions.';
   }
 
   dispose(): void {
