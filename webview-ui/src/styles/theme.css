@@ -1,0 +1,22 @@
+:root {
+  --pomocode-bg: var(--vscode-editor-background);
+  --pomocode-fg: var(--vscode-foreground);
+  --pomocode-muted: var(--vscode-descriptionForeground);
+  --pomocode-border: var(--vscode-widget-border, var(--vscode-panel-border));
+  --pomocode-card-bg: var(--vscode-sideBar-background, var(--vscode-editor-background));
+
+  --pomocode-accent: var(--vscode-button-background, #f97316);
+  --pomocode-accent-hover: var(--vscode-button-hoverBackground, #ea580c);
+  --pomocode-accent-fg: var(--vscode-button-foreground, #ffffff);
+
+  --pomocode-focus: #f97316;
+  --pomocode-short-break: #22c55e;
+  --pomocode-long-break: #38bdf8;
+
+  --pomocode-input-bg: var(--vscode-input-background);
+  --pomocode-input-fg: var(--vscode-input-foreground);
+  --pomocode-input-border: var(--vscode-input-border, var(--pomocode-border));
+
+  --pomocode-radius: 10px;
+  --pomocode-font: 'Inter', var(--vscode-font-family), sans-serif;
+}
