@@ -1,39 +1,21 @@
-import { useEffect, useReducer, useRef, type ReactElement } from 'react';
+import { useEffect, useReducer, useRef, useState, type ReactElement } from 'react';
 import type { HostMessage, PomoCodeSettings, TimerCommand } from '../../shared/protocol';
 import { getVsCodeApi } from './hooks/useVsCodeApi';
 import { appReducer, initialAppState } from './state/appReducer';
+import { unlockAudio, playCompletionBeep } from './audio';
 import { TimerDisplay } from './components/TimerDisplay';
 import { ControlButtons } from './components/ControlButtons';
 import { StreakBadge } from './components/StreakBadge';
+import { StreakCalendarModal } from './components/StreakCalendarModal';
 import { StatsSummary } from './components/StatsSummary';
+import { GoalsList } from './components/GoalsList';
 import { HistoryList } from './components/HistoryList';
 import { SettingsForm } from './components/SettingsForm';
-
-function playCompletionBeep(): void {
-  try {
-    const AudioContextClass = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-    const context = new AudioContextClass();
-    const oscillator = context.createOscillator();
-    const gain = context.createGain();
-
-    oscillator.type = 'sine';
-    oscillator.frequency.setValueAtTime(880, context.currentTime);
-    gain.gain.setValueAtTime(0.15, context.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.6);
-
-    oscillator.connect(gain);
-    gain.connect(context.destination);
-
-    oscillator.start();
-    oscillator.stop(context.currentTime + 0.6);
-    oscillator.onended = () => void context.close();
-  } catch {
-    // Audio is a non-essential enhancement; ignore failures silently.
-  }
-}
+import { Footer } from './components/Footer';
 
 export function App(): ReactElement {
   const [state, dispatch] = useReducer(appReducer, initialAppState);
+  const [isStreakModalOpen, setStreakModalOpen] = useState(false);
   const vscodeApi = useRef(getVsCodeApi()).current;
 
   useEffect(() => {
@@ -46,17 +28,43 @@ export function App(): ReactElement {
   }, [vscodeApi]);
 
   useEffect(() => {
+    function handleFirstInteraction(): void {
+      unlockAudio();
+      document.removeEventListener('pointerdown', handleFirstInteraction);
+    }
+    document.addEventListener('pointerdown', handleFirstInteraction);
+    return () => document.removeEventListener('pointerdown', handleFirstInteraction);
+  }, []);
+
+  useEffect(() => {
     if (state.timer?.justCompleted && state.settings?.enableSound) {
       playCompletionBeep();
     }
   }, [state.timer, state.settings?.enableSound]);
 
   function handleCommand(command: TimerCommand): void {
+    unlockAudio();
     vscodeApi.postMessage({ type: 'command', payload: { command } });
   }
 
   function handleSettingsUpdate(partial: Partial<PomoCodeSettings>): void {
     vscodeApi.postMessage({ type: 'settings/update', payload: partial });
+  }
+
+  function handleAddGoal(text: string): void {
+    vscodeApi.postMessage({ type: 'goals/add', payload: { text } });
+  }
+
+  function handleToggleGoal(id: string): void {
+    vscodeApi.postMessage({ type: 'goals/toggle', payload: { id } });
+  }
+
+  function handleRemoveGoal(id: string): void {
+    vscodeApi.postMessage({ type: 'goals/remove', payload: { id } });
+  }
+
+  function handleOpenExternal(url: string): void {
+    vscodeApi.postMessage({ type: 'openExternal', payload: { url } });
   }
 
   if (!state.timer || !state.settings || !state.stats) {
@@ -71,15 +79,26 @@ export function App(): ReactElement {
     <div className="app">
       <header className="app-header">
         <h1>PomoCode</h1>
-        <StreakBadge currentStreakDays={state.stats.currentStreakDays} />
+        <StreakBadge currentStreakDays={state.stats.currentStreakDays} onClick={() => setStreakModalOpen(true)} />
       </header>
 
       <TimerDisplay timer={state.timer} />
       <ControlButtons timer={state.timer} onCommand={handleCommand} />
 
+      <GoalsList goals={state.goals} onAdd={handleAddGoal} onToggle={handleToggleGoal} onRemove={handleRemoveGoal} />
       <StatsSummary stats={state.stats} />
-      <HistoryList entries={state.history} />
       <SettingsForm settings={state.settings} onUpdate={handleSettingsUpdate} />
+      <HistoryList entries={state.history} />
+
+      <Footer onOpenExternal={handleOpenExternal} />
+
+      {isStreakModalOpen && (
+        <StreakCalendarModal
+          entries={state.history}
+          stats={state.stats}
+          onClose={() => setStreakModalOpen(false)}
+        />
+      )}
     </div>
   );
 }

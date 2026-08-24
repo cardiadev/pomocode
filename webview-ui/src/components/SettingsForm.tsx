@@ -102,6 +102,15 @@ export function SettingsForm({ settings, onUpdate }: SettingsFormProps): ReactEl
         <label className="settings-toggle">
           <input
             type="checkbox"
+            checked={local.enableNativeNotifications}
+            onChange={(event) => handleToggle('enableNativeNotifications', event.target.checked)}
+          />
+          <span>Native macOS notifications (background alerts)</span>
+        </label>
+
+        <label className="settings-toggle">
+          <input
+            type="checkbox"
             checked={local.enableSound}
             onChange={(event) => handleToggle('enableSound', event.target.checked)}
           />
