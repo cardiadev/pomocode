@@ -18,8 +18,17 @@ async function showQuickMenu(timerEngine: TimerEngine, historyStore: HistoryStor
   const stats = computeStats(historyStore.getAll());
   const items: QuickMenuItem[] = [];
 
+  const roundPosition =
+    snapshot.sessionType === 'longBreak'
+      ? snapshot.sessionsBeforeLongBreak
+      : Math.min(snapshot.completedFocusSessionsInCycle + 1, snapshot.sessionsBeforeLongBreak);
+
   items.push({
-    label: `$(flame) ${stats.todayCount} pomodoros today · ${stats.currentStreakDays} day streak`,
+    label: `$(flame) ${stats.todayCount} pomodoros today · ${stats.roundsCompletedToday} rounds today · ${stats.currentStreakDays} day streak`,
+    kind: vscode.QuickPickItemKind.Separator,
+  });
+  items.push({
+    label: `$(sync) Round ${roundPosition} of ${snapshot.sessionsBeforeLongBreak}`,
     kind: vscode.QuickPickItemKind.Separator,
   });
 

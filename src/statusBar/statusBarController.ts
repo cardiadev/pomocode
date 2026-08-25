@@ -32,6 +32,7 @@ export class StatusBarController implements vscode.Disposable {
       remainingSeconds: 0,
       totalSeconds: 0,
       completedFocusSessionsInCycle: 0,
+      sessionsBeforeLongBreak: 4,
       justCompleted: false,
     });
     this.item.show();
@@ -49,7 +50,11 @@ export class StatusBarController implements vscode.Disposable {
 
     const time = formatTime(snapshot.remainingSeconds);
     const statusSuffix = snapshot.status === 'paused' ? ' (paused)' : '';
-    this.item.text = `${icon} ${time} ${label}${statusSuffix}`;
+    const roundPosition =
+      snapshot.sessionType === 'longBreak'
+        ? snapshot.sessionsBeforeLongBreak
+        : Math.min(snapshot.completedFocusSessionsInCycle + 1, snapshot.sessionsBeforeLongBreak);
+    this.item.text = `${icon} ${time} ${label} (${roundPosition}/${snapshot.sessionsBeforeLongBreak})${statusSuffix}`;
     this.item.tooltip = 'PomoCode: click for quick actions.';
   }
 
