@@ -1,3 +1,5 @@
+import type { CompletionSound } from '../../shared/protocol';
+
 type AudioContextConstructor = new () => AudioContext;
 
 let sharedContext: AudioContext | undefined;
@@ -27,27 +29,55 @@ export function unlockAudio(): void {
   }
 }
 
-export function playCompletionBeep(): void {
+function playTone(
+  context: AudioContext,
+  startTime: number,
+  frequency: number,
+  type: OscillatorType,
+  peakGain: number,
+  duration: number,
+): void {
+  const oscillator = context.createOscillator();
+  const gain = context.createGain();
+
+  oscillator.type = type;
+  oscillator.frequency.setValueAtTime(frequency, startTime);
+  gain.gain.setValueAtTime(0.0001, startTime);
+  gain.gain.exponentialRampToValueAtTime(peakGain, startTime + Math.min(0.02, duration / 4));
+  gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+  oscillator.connect(gain);
+  gain.connect(context.destination);
+
+  oscillator.start(startTime);
+  oscillator.stop(startTime + duration);
+}
+
+export function playCompletionBeep(style: CompletionSound = 'chime'): void {
   try {
     const context = getAudioContext();
     if (context.state === 'suspended') {
       void context.resume();
     }
+    const now = context.currentTime;
 
-    const oscillator = context.createOscillator();
-    const gain = context.createGain();
-
-    oscillator.type = 'sine';
-    oscillator.frequency.setValueAtTime(880, context.currentTime);
-    gain.gain.setValueAtTime(0.0001, context.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.25, context.currentTime + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.7);
-
-    oscillator.connect(gain);
-    gain.connect(context.destination);
-
-    oscillator.start();
-    oscillator.stop(context.currentTime + 0.7);
+    switch (style) {
+      case 'bell':
+        playTone(context, now, 660, 'triangle', 0.22, 0.8);
+        playTone(context, now, 990, 'triangle', 0.12, 0.6);
+        return;
+      case 'digital':
+        playTone(context, now, 1046, 'square', 0.12, 0.1);
+        playTone(context, now + 0.15, 1046, 'square', 0.12, 0.1);
+        return;
+      case 'soft':
+        playTone(context, now, 440, 'sine', 0.2, 0.9);
+        return;
+      case 'chime':
+      default:
+        playTone(context, now, 880, 'sine', 0.25, 0.7);
+        return;
+    }
   } catch {
     // Ignore: audio is a non-essential enhancement.
   }

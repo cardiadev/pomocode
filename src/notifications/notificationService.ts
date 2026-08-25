@@ -12,11 +12,12 @@ function escapeForAppleScript(value: string): string {
   return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 }
 
-function showNativeNotification(title: string, message: string): void {
+function showNativeNotification(title: string, message: string, soundName: string): void {
   if (process.platform !== 'darwin') {
     return;
   }
-  const script = `display notification "${escapeForAppleScript(message)}" with title "${escapeForAppleScript(title)}"`;
+  const soundClause = soundName === 'None' ? '' : ` sound name "${escapeForAppleScript(soundName)}"`;
+  const script = `display notification "${escapeForAppleScript(message)}" with title "${escapeForAppleScript(title)}"${soundClause}`;
   execFile('osascript', ['-e', script], () => {
     // Native notifications are a best-effort enhancement; ignore failures silently.
   });
@@ -32,7 +33,7 @@ export class NotificationService {
       void vscode.window.showInformationMessage(`PomoCode: ${message}`);
     }
     if (settings.enableNativeNotifications) {
-      showNativeNotification('PomoCode', message);
+      showNativeNotification('PomoCode', message, settings.nativeNotificationSound);
     }
   }
 
@@ -43,7 +44,7 @@ export class NotificationService {
       void vscode.window.showInformationMessage(`PomoCode: ${message}`);
     }
     if (settings.enableNativeNotifications) {
-      showNativeNotification('PomoCode', message);
+      showNativeNotification('PomoCode', message, settings.nativeNotificationSound);
     }
   }
 }

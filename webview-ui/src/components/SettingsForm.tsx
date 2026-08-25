@@ -1,6 +1,32 @@
 import { useEffect, useState, type ReactElement } from 'react';
 import type { PomoCodeSettings } from '../../../shared/protocol';
 import { useDebouncedCallback } from '../hooks/useDebouncedCallback';
+import { playCompletionBeep } from '../audio';
+
+const NATIVE_NOTIFICATION_SOUNDS: PomoCodeSettings['nativeNotificationSound'][] = [
+  'None',
+  'Basso',
+  'Blow',
+  'Bottle',
+  'Frog',
+  'Funk',
+  'Glass',
+  'Hero',
+  'Morse',
+  'Ping',
+  'Pop',
+  'Purr',
+  'Sosumi',
+  'Submarine',
+  'Tink',
+];
+
+const COMPLETION_SOUNDS: { value: PomoCodeSettings['completionSound']; label: string }[] = [
+  { value: 'chime', label: 'Chime' },
+  { value: 'bell', label: 'Bell' },
+  { value: 'digital', label: 'Digital' },
+  { value: 'soft', label: 'Soft' },
+];
 
 interface SettingsFormProps {
   settings: PomoCodeSettings;
@@ -28,6 +54,11 @@ export function SettingsForm({ settings, onUpdate }: SettingsFormProps): ReactEl
   function handleToggle(key: keyof PomoCodeSettings, checked: boolean): void {
     setLocal((previous) => ({ ...previous, [key]: checked }));
     onUpdate({ [key]: checked });
+  }
+
+  function handleSelectChange<K extends keyof PomoCodeSettings>(key: K, value: PomoCodeSettings[K]): void {
+    setLocal((previous) => ({ ...previous, [key]: value }));
+    onUpdate({ [key]: value });
   }
 
   return (
@@ -108,6 +139,22 @@ export function SettingsForm({ settings, onUpdate }: SettingsFormProps): ReactEl
           <span>Native macOS notifications (background alerts)</span>
         </label>
 
+        {local.enableNativeNotifications && (
+          <label className="settings-field settings-field--indented">
+            <span>Native notification sound</span>
+            <select
+              value={local.nativeNotificationSound}
+              onChange={(event) => handleSelectChange('nativeNotificationSound', event.target.value as PomoCodeSettings['nativeNotificationSound'])}
+            >
+              {NATIVE_NOTIFICATION_SOUNDS.map((sound) => (
+                <option key={sound} value={sound}>
+                  {sound}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+
         <label className="settings-toggle">
           <input
             type="checkbox"
@@ -116,6 +163,26 @@ export function SettingsForm({ settings, onUpdate }: SettingsFormProps): ReactEl
           />
           <span>Play sound (panel must be open)</span>
         </label>
+
+        {local.enableSound && (
+          <label className="settings-field settings-field--indented">
+            <span>Panel completion sound</span>
+            <select
+              value={local.completionSound}
+              onChange={(event) => {
+                const value = event.target.value as PomoCodeSettings['completionSound'];
+                handleSelectChange('completionSound', value);
+                playCompletionBeep(value);
+              }}
+            >
+              {COMPLETION_SOUNDS.map((sound) => (
+                <option key={sound.value} value={sound.value}>
+                  {sound.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
       </div>
     </div>
   );

@@ -2,6 +2,25 @@ export type SessionType = 'focus' | 'shortBreak' | 'longBreak';
 
 export type TimerStatus = 'idle' | 'running' | 'paused';
 
+export type CompletionSound = 'chime' | 'bell' | 'digital' | 'soft';
+
+export type NativeNotificationSound =
+  | 'None'
+  | 'Basso'
+  | 'Blow'
+  | 'Bottle'
+  | 'Frog'
+  | 'Funk'
+  | 'Glass'
+  | 'Hero'
+  | 'Morse'
+  | 'Ping'
+  | 'Pop'
+  | 'Purr'
+  | 'Sosumi'
+  | 'Submarine'
+  | 'Tink';
+
 export interface TimerSnapshot {
   status: TimerStatus;
   sessionType: SessionType;
@@ -19,7 +38,9 @@ export interface PomoCodeSettings {
   autoStartNextSession: boolean;
   enableNotifications: boolean;
   enableNativeNotifications: boolean;
+  nativeNotificationSound: NativeNotificationSound;
   enableSound: boolean;
+  completionSound: CompletionSound;
 }
 
 export interface HistoryEntry {

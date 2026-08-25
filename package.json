@@ -2,7 +2,7 @@
   "name": "pomocode",
   "displayName": "PomoCode",
   "description": "A dynamic, friendly Pomodoro timer for VS Code with live stats, streaks, and session history.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "publisher": "cardiadev",
   "license": "MIT",
   "private": true,
@@ -112,11 +112,52 @@
           "scope": "window",
           "description": "macOS only: also show a native system notification, so you see it even when VS Code is in the background."
         },
+        "pomocode.nativeNotificationSound": {
+          "type": "string",
+          "default": "Glass",
+          "enum": [
+            "None",
+            "Basso",
+            "Blow",
+            "Bottle",
+            "Frog",
+            "Funk",
+            "Glass",
+            "Hero",
+            "Morse",
+            "Ping",
+            "Pop",
+            "Purr",
+            "Sosumi",
+            "Submarine",
+            "Tink"
+          ],
+          "scope": "window",
+          "description": "macOS only: system sound played with the native notification. Matches the sound names in System Settings > Sound."
+        },
         "pomocode.enableSound": {
           "type": "boolean",
           "default": true,
           "scope": "window",
           "description": "Play a sound in the PomoCode panel when a session ends."
+        },
+        "pomocode.completionSound": {
+          "type": "string",
+          "default": "chime",
+          "enum": [
+            "chime",
+            "bell",
+            "digital",
+            "soft"
+          ],
+          "enumDescriptions": [
+            "Soft single tone (default)",
+            "Two-tone bell",
+            "Short digital beep",
+            "Low, gentle tone"
+          ],
+          "scope": "window",
+          "description": "Tone style played in the panel when a session ends."
         }
       }
     },

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import type { PomoCodeSettings } from '../../shared/protocol';
+import type { CompletionSound, NativeNotificationSound, PomoCodeSettings } from '../../shared/protocol';
 
 const SECTION = 'pomocode';
 
@@ -27,7 +27,9 @@ export class SettingsService {
       autoStartNextSession: config.get<boolean>('autoStartNextSession', false),
       enableNotifications: config.get<boolean>('enableNotifications', true),
       enableNativeNotifications: config.get<boolean>('enableNativeNotifications', true),
+      nativeNotificationSound: config.get<NativeNotificationSound>('nativeNotificationSound', 'Glass'),
       enableSound: config.get<boolean>('enableSound', true),
+      completionSound: config.get<CompletionSound>('completionSound', 'chime'),
     };
   }
 
