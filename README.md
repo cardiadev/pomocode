@@ -12,7 +12,7 @@ A dynamic, friendly Pomodoro timer for VS Code with live stats, streaks, and ses
 - **Notifications** — VS Code notifications announce when a session starts and ends, with an optional native macOS notification so you still see it when VS Code is in the background.
 - **Fully customizable** — durations, auto-start, notifications, and sound are all configurable from VS Code Settings or directly from the panel, kept in sync both ways.
 - **Per-profile isolation** — settings, history, and goals are scoped to your active VS Code Profile, so switching profiles gives you a clean, independent PomoCode state.
-- **Session history & stats** — every completed session is recorded; the panel shows today/week/all-time counts and focused minutes, plus your current daily streak.
+- **Session history & stats** — every completed session is recorded; the panel shows today/week/all-time pomodoro and round counts, focused minutes, and your current daily streak.
 - **Themed to match VS Code** — the panel follows your active color theme automatically (light, dark, or high contrast), using the self-hosted Inter font.
 
 ## Getting started
@@ -50,6 +50,14 @@ All settings are available under **Settings → Extensions → PomoCode**, or di
 
 Settings, session history, and goals respect VS Code's **Profiles** feature: each profile keeps its own independent PomoCode state.
 
+## Troubleshooting native notifications
+
+If you don't see or hear the native macOS notification even with `pomocode.enableNativeNotifications` on, it's almost always a macOS-level setting, not the extension:
+
+- Check **System Settings → Focus**: an active Focus/Do Not Disturb mode silences all notifications and sounds, including PomoCode's.
+- Check **System Settings → Notifications**: find the app that's running the AppleScript (usually "Script Editor", or your terminal app if you triggered a test manually) and make sure notifications and sounds are allowed for it.
+- You can test this independently of PomoCode from a terminal: `osascript -e 'display notification "test" with title "test" sound name "Glass"'`. If that produces nothing, it's a system setting, not PomoCode.
+
 ## A note on the native notification icon
 
 The native macOS notification (`pomocode.enableNativeNotifications`) is triggered via AppleScript's `display notification`. macOS always attributes these to a fixed system identity regardless of which process ran the script, so there's no way to make it show PomoCode's icon without bundling a separate signed helper binary — which we intentionally avoid, to keep the extension dependency-free and Gatekeeper-friendly. The title, message, and sound are still fully PomoCode's; only the icon is generic.
@@ -57,20 +65,6 @@ The native macOS notification (`pomocode.enableNativeNotifications`) is triggere
 ## A note on sound
 
 PomoCode doesn't ship an audio file. Instead, it synthesizes a short beep in the panel using the Web Audio API when a session ends. This keeps the extension lightweight and avoids any font/audio licensing concerns. Browsers only allow audio to start after a user gesture, so PomoCode "unlocks" its audio context the first time you click anything in the panel (e.g. pressing Start) — as long as you've clicked once, the beep will play on every future session completion. The sound only plays while the PomoCode panel has been opened at least once in the current window; the visual/native notification always works regardless of panel state.
-
-## Development
-
-This extension is built with TypeScript, bundled with [esbuild](https://esbuild.github.io/), and uses [Bun](https://bun.sh) as the package manager and script runner. The panel UI is a React app; there is no separate server or framework running inside the webview.
-
-```bash
-bun install       # install dependencies
-bun run dev       # esbuild watch mode for both the extension host and the panel
-bun run build     # production build
-bun run check     # lint (oxlint) + typecheck
-bun run package   # build and produce a .vsix package
-```
-
-To try the extension locally, open this folder in VS Code and press `F5` to launch an Extension Development Host window.
 
 ## License
 
