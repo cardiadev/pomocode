@@ -46,6 +46,14 @@ const DEFAULT_COLORS = {
   longBreakColor: '#38bdf8',
 };
 
+const DEFAULT_TIMER_SETTINGS = {
+  focusDuration: 25,
+  shortBreakDuration: 5,
+  longBreakDuration: 15,
+  sessionsBeforeLongBreak: 4,
+  dailyTargetPomodoros: 8,
+};
+
 interface SettingsFormProps {
   settings: PomoCodeSettings;
   onUpdate: (partial: Partial<PomoCodeSettings>) => void;
@@ -72,7 +80,7 @@ export function SettingsForm({
     setLocal(settings);
   }, [settings]);
 
-  const debouncedUpdate = useDebouncedCallback((partial: Partial<PomoCodeSettings>) => onUpdate(partial), 400);
+  const debouncedUpdate = useDebouncedCallback((partial: Partial<PomoCodeSettings>) => onUpdate(partial), 200);
 
   function handleNumberChange(key: keyof PomoCodeSettings, value: number): void {
     setLocal((previous) => ({ ...previous, [key]: value }));
@@ -90,6 +98,11 @@ export function SettingsForm({
   function handleResetColors(): void {
     setLocal((previous) => ({ ...previous, ...DEFAULT_COLORS }));
     onUpdate(DEFAULT_COLORS);
+  }
+
+  function handleResetTimers(): void {
+    setLocal((previous) => ({ ...previous, ...DEFAULT_TIMER_SETTINGS }));
+    onUpdate(DEFAULT_TIMER_SETTINGS);
   }
 
   function handleToggle(key: keyof PomoCodeSettings, checked: boolean): void {
@@ -172,6 +185,15 @@ export function SettingsForm({
           onChange={(val) => handleNumberChange('dailyTargetPomodoros', val)}
         />
       </div>
+
+      <button
+        type="button"
+        className="btn btn--secondary btn--sm reset-timers-btn"
+        onClick={handleResetTimers}
+        style={{ marginTop: '8px', alignSelf: 'flex-start' }}
+      >
+        Reset Timers to Default
+      </button>
 
       <h2 className="section-title" style={{ marginTop: '20px' }}>
         Appearance &amp; Theme

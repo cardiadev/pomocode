@@ -154,6 +154,34 @@ body {
   margin-top: 4px;
 }
 
+.timer-today-badge {
+  position: absolute;
+  top: 6px;
+  right: 18px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 5px;
+  border-radius: 12px;
+  background: var(--pomocode-card-bg);
+  border: 1.5px solid var(--pomocode-border);
+  color: var(--pomocode-muted);
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 3;
+  transition: all 0.2s ease;
+}
+
+.timer-today-badge--active {
+  background: #f97316;
+  border-color: #ffffff;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.6);
+}
+
 .timer-ring {
   width: 220px;
   height: 220px;
@@ -756,17 +784,17 @@ body {
 .streak-badge {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   font-size: 11px;
   font-weight: 700;
   font-family: var(--pomocode-font);
-  padding: 3px 8px;
+  padding: 3px 9px;
   border-radius: 999px;
   background: var(--pomocode-card-bg);
   border: 1px solid var(--pomocode-border);
-  color: var(--pomocode-fg);
+  color: var(--pomocode-muted);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
 }
 
 .streak-badge:hover {
@@ -774,8 +802,26 @@ body {
   transform: scale(1.03);
 }
 
-.streak-flame {
-  font-size: 12px;
+.streak-badge .streak-flame-svg {
+  color: var(--pomocode-muted);
+  transition: all 0.2s ease;
+}
+
+.streak-badge--active-today {
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.18), rgba(239, 68, 68, 0.18));
+  border-color: rgba(249, 115, 22, 0.45);
+  color: #f97316;
+  box-shadow: 0 0 10px rgba(249, 115, 22, 0.25);
+}
+
+.streak-badge--active-today .streak-flame-svg {
+  color: #f97316;
+  filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.6));
+}
+
+.streak-badge--active-today .streak-count {
+  color: var(--pomocode-fg);
+  font-weight: 800;
 }
 
 /* Calendar View */
@@ -799,11 +845,23 @@ body {
 .streak-hero-content {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
-.streak-hero-flame {
-  font-size: 28px;
+.streak-hero-flame-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(249, 115, 22, 0.18);
+  border-radius: 12px;
+  border: 1px solid rgba(249, 115, 22, 0.35);
+}
+
+.streak-hero-flame-svg {
+  color: #f97316;
+  filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.6));
 }
 
 .streak-hero-details {
@@ -923,7 +981,6 @@ body {
   aspect-ratio: 1;
   position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: 11px;
@@ -932,7 +989,7 @@ body {
   border: 1px solid var(--pomocode-border);
   color: var(--pomocode-fg);
   cursor: pointer;
-  padding: 2px;
+  padding: 0;
   transition: all 0.15s ease;
 }
 
@@ -961,51 +1018,46 @@ body {
   color: var(--pomocode-accent-fg) !important;
 }
 
-.calendar-cell-day-badge {
-  position: absolute;
-  top: 2px;
-  right: 3px;
-  font-size: 8px;
+.calendar-cell-day-number {
+  font-size: 11px;
   font-weight: 600;
-  opacity: 0.65;
-  line-height: 1;
+  text-align: center;
 }
 
-.calendar-cell--today .calendar-cell-day-badge {
-  opacity: 1;
+.calendar-cell--today .calendar-cell-day-number {
+  font-weight: 800;
   color: var(--pomocode-accent);
+}
+
+.calendar-cell--selected .calendar-cell-day-number {
+  color: var(--pomocode-accent-fg);
   font-weight: 800;
 }
 
-.calendar-cell--selected .calendar-cell-day-badge {
-  color: var(--pomocode-accent-fg);
-  opacity: 0.9;
-}
-
-.calendar-cell-center {
+.calendar-cell-notif-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  border-radius: 7px;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 8px;
+  font-weight: 800;
+  line-height: 14px;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--pomocode-card-bg);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1px;
-  margin-top: 4px;
+  z-index: 2;
 }
 
-.calendar-cell-flame-icon {
-  color: var(--pomocode-accent);
-}
-
-.calendar-cell--selected .calendar-cell-flame-icon {
-  color: var(--pomocode-accent-fg);
-}
-
-.calendar-cell-count {
-  font-size: 9px;
-  font-weight: 700;
-  color: var(--pomocode-accent);
-}
-
-.calendar-cell--selected .calendar-cell-count {
-  color: var(--pomocode-accent-fg);
+.calendar-cell--selected .calendar-cell-notif-badge {
+  border-color: #ffffff;
 }
 
 /* Day Inspector */

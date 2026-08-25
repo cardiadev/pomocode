@@ -53,7 +53,25 @@ export function App(): ReactElement {
 
   function handleSettingsUpdate(partial: Partial<PomoCodeSettings>): void {
     if (state.settings) {
-      dispatch({ type: 'settings/sync', payload: { ...state.settings, ...partial } });
+      const updatedSettings = { ...state.settings, ...partial };
+      dispatch({ type: 'settings/sync', payload: updatedSettings });
+
+      if (state.timer && state.timer.status === 'idle') {
+        let durationMinutes = updatedSettings.focusDuration;
+        if (state.timer.sessionType === 'shortBreak') durationMinutes = updatedSettings.shortBreakDuration;
+        if (state.timer.sessionType === 'longBreak') durationMinutes = updatedSettings.longBreakDuration;
+        const totalSec = durationMinutes * 60;
+        dispatch({
+          type: 'timer/update',
+          payload: {
+            ...state.timer,
+            totalSeconds: totalSec,
+            remainingSeconds: totalSec,
+            sessionsBeforeLongBreak: updatedSettings.sessionsBeforeLongBreak,
+            totalCycleSteps: updatedSettings.sessionsBeforeLongBreak * 2,
+          },
+        });
+      }
     }
     vscodeApi.postMessage({ type: 'settings/update', payload: partial });
   }
@@ -133,6 +151,7 @@ export function App(): ReactElement {
         </div>
         <StreakBadge
           currentStreakDays={state.stats.currentStreakDays}
+          completedToday={state.stats.todayCount > 0}
           onClick={() => setActiveTab('calendar')}
         />
       </header>
@@ -148,7 +167,9 @@ export function App(): ReactElement {
       {/* Tab 1: Timer / Dashboard */}
       {activeTab === 'timer' && (
         <main className="tab-pane tab-pane--timer">
-          <TimerDisplay timer={state.timer} />
+          <TimerDisplay timer={state.timer} todayCount={state.stats.todayCount} />
+
+          <ControlButtons timer={state.timer} onCommand={handleCommand} />
 
           <CycleTracker
             completedFocusSessionsInCycle={state.timer.completedFocusSessionsInCycle}
@@ -160,8 +181,6 @@ export function App(): ReactElement {
             dailyTargetPomodoros={state.settings.dailyTargetPomodoros}
             roundsCompletedToday={state.stats.roundsCompletedToday}
           />
-
-          <ControlButtons timer={state.timer} onCommand={handleCommand} />
 
           <SessionGoalSelector
             goals={state.goals}

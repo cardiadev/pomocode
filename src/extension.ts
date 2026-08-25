@@ -71,7 +71,10 @@ export function activate(context: vscode.ExtensionContext): void {
       notificationService.notifySessionCompleted(event.sessionType, event.nextSessionType);
     }),
     settingsService.onDidChange((settings) => {
+      timerEngine.onSettingsChanged(settings);
+      statusBarController.render(timerEngine.getSnapshot());
       panelProvider.postMessage({ type: 'settings/sync', payload: settings });
+      panelProvider.postMessage({ type: 'timer/update', payload: timerEngine.getSnapshot() });
       const entries = historyStore.getAll();
       panelProvider.postMessage({
         type: 'history/sync',

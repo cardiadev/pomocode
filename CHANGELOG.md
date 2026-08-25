@@ -2,6 +2,20 @@
 
 All notable changes to PomoCode are documented in this file.
 
+## [0.7.0] - 2026-08-25
+
+### Added
+
+- **Instant Settings Reactivity**: Changes in *Timer & Targets* (durations, pomodoros per round, daily target) immediately update the timer display, status bar, and progress tracker without delay or reload.
+- **Reset Timers to Default**: Added a dedicated *Reset Timers to Default* button in the Timer & Targets settings card to restore standard Pomodoro intervals (25/5/15 min, 4 per round, 8 daily target).
+- **Daily Pomodoro Count Badge on Main Timer**: Added a glowing circular notification badge at the top-right corner of the main circular timer displaying the number of pomodoros completed today.
+- **Active Daily Streak Glow**: The header streak badge now illuminates in vibrant orange with glow when at least 1 pomodoro has been completed today, indicating daily completion.
+- **Notification-Style Calendar Badges**: Day numbers in the monthly calendar grid are centered in each cell, and completed days feature a red notification circle bubble in the top-right corner with the session count.
+
+### Changed
+
+- **Optimized Main View Layout**: Positioned the primary control buttons (*Start/Resume/Pause*, *Skip*, *Reset*) immediately below the circular timer, followed by the Cycle Tracker, Daily Target progress, goals, and stats.
+
 ## [0.6.1] - 2026-08-25
 
 ### Changed

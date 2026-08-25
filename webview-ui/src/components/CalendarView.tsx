@@ -172,14 +172,11 @@ export function CalendarView({ entries, stats }: CalendarViewProps): ReactElemen
                 onClick={() => setSelectedDayKey(dayKey)}
                 title={`${date.toLocaleDateString()}: ${completedFocusCount} focus sessions`}
               >
-                <span className="calendar-cell-day-badge">{date.getDate()}</span>
+                <span className="calendar-cell-day-number">{date.getDate()}</span>
                 {completedFocusCount > 0 && (
-                  <div className="calendar-cell-center">
-                    <FlameIcon size={14} className="calendar-cell-flame-icon" />
-                    {completedFocusCount > 1 && (
-                      <span className="calendar-cell-count">{completedFocusCount}</span>
-                    )}
-                  </div>
+                  <span className="calendar-cell-notif-badge" title={`${completedFocusCount} completed pomodoros`}>
+                    {completedFocusCount}
+                  </span>
                 )}
               </button>
             );

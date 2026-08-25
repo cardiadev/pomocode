@@ -18,14 +18,23 @@ function formatTime(totalSeconds: number): string {
 
 interface TimerDisplayProps {
   timer: TimerSnapshot;
+  todayCount?: number;
 }
 
-export function TimerDisplay({ timer }: TimerDisplayProps): ReactElement {
+export function TimerDisplay({ timer, todayCount }: TimerDisplayProps): ReactElement {
   const progress = timer.totalSeconds > 0 ? timer.remainingSeconds / timer.totalSeconds : 1;
   const dashOffset = CIRCUMFERENCE * (1 - progress);
 
   return (
     <div className="timer-display">
+      {todayCount !== undefined && (
+        <div
+          className={`timer-today-badge${todayCount > 0 ? ' timer-today-badge--active' : ''}`}
+          title={`${todayCount} pomodoro${todayCount === 1 ? '' : 's'} completed today`}
+        >
+          <span className="timer-today-badge-count">{todayCount}</span>
+        </div>
+      )}
       <svg viewBox="0 0 220 220" className="timer-ring" role="img" aria-label={`${SESSION_LABELS[timer.sessionType]} timer`}>
         <circle className="timer-ring-track" cx="110" cy="110" r={RADIUS} />
         <circle

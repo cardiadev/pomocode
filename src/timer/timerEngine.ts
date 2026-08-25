@@ -70,6 +70,14 @@ export class TimerEngine {
     this.emitState(false);
   }
 
+  onSettingsChanged(settings: PomoCodeSettings): void {
+    if (this.status === 'idle') {
+      this.totalSeconds = durationSecondsFor(this.sessionType, settings);
+      this.remainingSeconds = this.totalSeconds;
+    }
+    this.emitState(false);
+  }
+
   start(): void {
     if (this.status === 'running') {
       return;
