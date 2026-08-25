@@ -16,12 +16,14 @@ export function activate(context: vscode.ExtensionContext): void {
   const notificationService = new NotificationService(() => settingsService.read());
   const timerEngine = new TimerEngine(() => settingsService.read());
   const statusBarController = new StatusBarController();
+  const extensionVersion = (context.extension.packageJSON as { version?: string }).version ?? '0.0.0';
   const panelProvider = new PanelProvider(
     context.extensionUri,
     timerEngine,
     settingsService,
     historyStore,
     goalsStore,
+    extensionVersion,
   );
 
   context.subscriptions.push(

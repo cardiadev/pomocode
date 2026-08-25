@@ -16,6 +16,7 @@ export class PanelProvider implements vscode.WebviewViewProvider {
     private readonly settingsService: SettingsService,
     private readonly historyStore: HistoryStore,
     private readonly goalsStore: GoalsStore,
+    private readonly extensionVersion: string,
   ) {}
 
   resolveWebviewView(webviewView: vscode.WebviewView): void {
@@ -98,5 +99,6 @@ export class PanelProvider implements vscode.WebviewViewProvider {
     const entries = this.historyStore.getAll();
     this.postMessage({ type: 'history/sync', payload: { entries, stats: computeStats(entries) } });
     this.postMessage({ type: 'goals/sync', payload: this.goalsStore.getAll() });
+    this.postMessage({ type: 'meta/sync', payload: { version: this.extensionVersion } });
   }
 }

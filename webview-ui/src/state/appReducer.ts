@@ -6,6 +6,7 @@ export interface AppState {
   history: HistoryEntry[];
   stats: StatsSnapshot | undefined;
   goals: Goal[];
+  version: string | undefined;
 }
 
 export const initialAppState: AppState = {
@@ -14,6 +15,7 @@ export const initialAppState: AppState = {
   history: [],
   stats: undefined,
   goals: [],
+  version: undefined,
 };
 
 export function appReducer(state: AppState, message: HostMessage): AppState {
@@ -26,6 +28,8 @@ export function appReducer(state: AppState, message: HostMessage): AppState {
       return { ...state, history: message.payload.entries, stats: message.payload.stats };
     case 'goals/sync':
       return { ...state, goals: message.payload };
+    case 'meta/sync':
+      return { ...state, version: message.payload.version };
     default:
       return state;
   }
