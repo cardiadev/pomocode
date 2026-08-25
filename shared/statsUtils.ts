@@ -45,6 +45,10 @@ export function computeStats(entries: HistoryEntry[]): StatsSnapshot {
   const weekStart = startOfLocalWeek(now);
 
   const completedFocusEntries = entries.filter((entry) => entry.type === 'focus' && entry.completed);
+  const completedRoundEntries = entries.filter((entry) => entry.type === 'longBreak' && entry.completed);
+  const roundsCompletedToday = completedRoundEntries.filter(
+    (entry) => toLocalDayKey(entry.endedAt) === todayKey,
+  ).length;
 
   let todayCount = 0;
   let weekCount = 0;
@@ -79,5 +83,7 @@ export function computeStats(entries: HistoryEntry[]): StatsSnapshot {
     weekMinutes,
     allTimeMinutes,
     currentStreakDays: computeStreakDays(completedFocusDayKeys),
+    roundsCompletedToday,
+    roundsCompletedAllTime: completedRoundEntries.length,
   };
 }

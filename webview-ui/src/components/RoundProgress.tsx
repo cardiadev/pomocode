@@ -5,12 +5,14 @@ interface RoundProgressProps {
   completedFocusSessionsInCycle: number;
   sessionsBeforeLongBreak: number;
   sessionType: SessionType;
+  roundsCompletedToday: number;
 }
 
 export function RoundProgress({
   completedFocusSessionsInCycle,
   sessionsBeforeLongBreak,
   sessionType,
+  roundsCompletedToday,
 }: RoundProgressProps): ReactElement {
   const dots = Array.from({ length: sessionsBeforeLongBreak }, (_, index) =>
     sessionType === 'longBreak' ? true : index < completedFocusSessionsInCycle,
@@ -27,6 +29,9 @@ export function RoundProgress({
         {sessionType === 'longBreak'
           ? 'Round complete — enjoy your long break'
           : `Pomodoro ${Math.min(completedFocusSessionsInCycle + 1, sessionsBeforeLongBreak)} of ${sessionsBeforeLongBreak} this round`}
+      </span>
+      <span className="round-progress-total">
+        {roundsCompletedToday} full {roundsCompletedToday === 1 ? 'round' : 'rounds'} completed today
       </span>
     </div>
   );

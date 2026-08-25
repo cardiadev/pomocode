@@ -34,6 +34,14 @@ export function StatsSummary({ stats }: StatsSummaryProps): ReactElement {
           <span className="stat-value">{stats.allTimeMinutes}m</span>
           <span className="stat-label">Focused all time</span>
         </div>
+        <div className="stat-tile">
+          <span className="stat-value">{stats.roundsCompletedToday}</span>
+          <span className="stat-label">Rounds today</span>
+        </div>
+        <div className="stat-tile">
+          <span className="stat-value">{stats.roundsCompletedAllTime}</span>
+          <span className="stat-label">Rounds all time</span>
+        </div>
       </div>
     </div>
   );

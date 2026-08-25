@@ -86,8 +86,9 @@ export function App(): ReactElement {
       <TimerDisplay timer={state.timer} />
       <RoundProgress
         completedFocusSessionsInCycle={state.timer.completedFocusSessionsInCycle}
-        sessionsBeforeLongBreak={state.settings.sessionsBeforeLongBreak}
+        sessionsBeforeLongBreak={state.timer.sessionsBeforeLongBreak}
         sessionType={state.timer.sessionType}
+        roundsCompletedToday={state.stats.roundsCompletedToday}
       />
       <ControlButtons timer={state.timer} onCommand={handleCommand} />
 
@@ -96,7 +97,7 @@ export function App(): ReactElement {
       <SettingsForm settings={state.settings} onUpdate={handleSettingsUpdate} />
       <HistoryList entries={state.history} />
 
-      <Footer onOpenExternal={handleOpenExternal} />
+      <Footer onOpenExternal={handleOpenExternal} version={state.version} />
 
       {isStreakModalOpen && (
         <StreakCalendarModal

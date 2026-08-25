@@ -27,6 +27,7 @@ export interface TimerSnapshot {
   remainingSeconds: number;
   totalSeconds: number;
   completedFocusSessionsInCycle: number;
+  sessionsBeforeLongBreak: number;
   justCompleted: boolean;
 }
 
@@ -60,6 +61,8 @@ export interface StatsSnapshot {
   weekMinutes: number;
   allTimeMinutes: number;
   currentStreakDays: number;
+  roundsCompletedToday: number;
+  roundsCompletedAllTime: number;
 }
 
 export interface Goal {
@@ -75,7 +78,8 @@ export type HostMessage =
   | { type: 'timer/update'; payload: TimerSnapshot }
   | { type: 'settings/sync'; payload: PomoCodeSettings }
   | { type: 'history/sync'; payload: { entries: HistoryEntry[]; stats: StatsSnapshot } }
-  | { type: 'goals/sync'; payload: Goal[] };
+  | { type: 'goals/sync'; payload: Goal[] }
+  | { type: 'meta/sync'; payload: { version: string } };
 
 export type WebviewMessage =
   | { type: 'command'; payload: { command: TimerCommand } }

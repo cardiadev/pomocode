@@ -148,6 +148,13 @@ body {
   text-align: center;
 }
 
+.round-progress-total {
+  font-size: 9px;
+  color: var(--pomocode-muted);
+  opacity: 0.7;
+  text-align: center;
+}
+
 /* Controls */
 
 .control-buttons {
@@ -467,6 +474,13 @@ body {
 
 .app-footer-link:hover {
   color: var(--pomocode-fg);
+}
+
+.app-footer-version {
+  font-size: 9px;
+  color: var(--pomocode-muted);
+  opacity: 0.6;
+  margin-top: 2px;
 }
 
 /* Streak calendar modal */

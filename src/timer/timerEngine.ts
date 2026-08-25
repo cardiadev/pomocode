@@ -43,6 +43,7 @@ export class TimerEngine {
       remainingSeconds: this.remainingSeconds,
       totalSeconds: this.totalSeconds,
       completedFocusSessionsInCycle: this.completedFocusSessionsInCycle,
+      sessionsBeforeLongBreak: this.getSettings().sessionsBeforeLongBreak,
       justCompleted: false,
     };
   }
