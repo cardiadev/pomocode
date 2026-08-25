@@ -8,11 +8,6 @@ const SESSION_LABELS: Record<SessionType, string> = {
   longBreak: 'Long Break',
 };
 
-const SESSION_ICONS: Record<SessionType, string> = {
-  focus: '🔥',
-  shortBreak: '☕',
-  longBreak: '🌴',
-};
 
 function formatTimeOnly(isoDate: string): string {
   const date = new Date(isoDate);
@@ -61,21 +56,21 @@ export function HistoryList({ entries }: HistoryListProps): ReactElement {
             className={`filter-pill${filterType === 'all' ? ' filter-pill--active' : ''}`}
             onClick={() => setFilterType('all')}
           >
-            All Sessions ({entries.length})
+            All ({entries.length})
           </button>
           <button
             type="button"
             className={`filter-pill${filterType === 'focus' ? ' filter-pill--active' : ''}`}
             onClick={() => setFilterType('focus')}
           >
-            🔥 Focus Only
+            Focus Only
           </button>
           <button
             type="button"
             className={`filter-pill${filterType === 'break' ? ' filter-pill--active' : ''}`}
             onClick={() => setFilterType('break')}
           >
-            ☕ Breaks Only
+            Breaks Only
           </button>
         </div>
 
@@ -106,10 +101,10 @@ export function HistoryList({ entries }: HistoryListProps): ReactElement {
                   <span className="history-day-date">({group.dayKey})</span>
                 </div>
                 <div className="history-day-stats">
-                  <span className="day-stat-chip">🔥 {group.completedFocusCount} focus</span>
-                  <span className="day-stat-chip">⏱️ {group.totalFocusMinutes}m</span>
+                  <span className="day-stat-chip">{group.completedFocusCount} focus</span>
+                  <span className="day-stat-chip">{group.totalFocusMinutes}m</span>
                   {group.roundsCompleted > 0 && (
-                    <span className="day-stat-chip day-stat-chip--round">🌴 {group.roundsCompleted} round</span>
+                    <span className="day-stat-chip day-stat-chip--round">{group.roundsCompleted} round</span>
                   )}
                 </div>
               </div>
@@ -118,7 +113,6 @@ export function HistoryList({ entries }: HistoryListProps): ReactElement {
                 {group.entries.map((entry) => (
                   <li key={entry.id} className={`history-item history-item--${entry.type}`}>
                     <div className="history-item-main">
-                      <span className="history-item-icon">{SESSION_ICONS[entry.type]}</span>
                       <span className="history-item-type">{SESSION_LABELS[entry.type]}</span>
                       <span className="history-item-duration">{entry.durationMinutes}m</span>
                       <span className="history-item-time">
@@ -131,7 +125,7 @@ export function HistoryList({ entries }: HistoryListProps): ReactElement {
                         <div className="history-item-goals">
                           {entry.goalTitles.map((title, idx) => (
                             <span key={idx} className="history-goal-chip">
-                              🎯 {title}
+                              {title}
                             </span>
                           ))}
                         </div>

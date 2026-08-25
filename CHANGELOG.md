@@ -2,6 +2,12 @@
 
 All notable changes to PomoCode are documented in this file.
 
+## [0.5.4] - 2026-08-25
+
+### Changed
+
+- **Polished History Card Styling**: Replaced the thick left border indicator with a full subtle border and soft translucent background tint matching each session type (focus, short break, long break) for a modern, refined look.
+
 ## [0.5.3] - 2026-08-25
 
 ### Added

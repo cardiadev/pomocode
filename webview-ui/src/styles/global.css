@@ -1235,23 +1235,42 @@ body {
 .history-item {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 6px 8px;
-  border-radius: 6px;
-  background: var(--pomocode-input-bg);
-  border-left: 3px solid var(--pomocode-border);
+  gap: 5px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--pomocode-card-bg);
+  border: 1px solid var(--pomocode-border);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .history-item--focus {
-  border-left-color: var(--pomocode-focus);
+  background: rgba(249, 115, 22, 0.06);
+  border-color: rgba(249, 115, 22, 0.22);
+}
+
+.history-item--focus:hover {
+  background: rgba(249, 115, 22, 0.09);
+  border-color: rgba(249, 115, 22, 0.35);
 }
 
 .history-item--shortBreak {
-  border-left-color: var(--pomocode-short-break);
+  background: rgba(34, 197, 94, 0.06);
+  border-color: rgba(34, 197, 94, 0.22);
+}
+
+.history-item--shortBreak:hover {
+  background: rgba(34, 197, 94, 0.09);
+  border-color: rgba(34, 197, 94, 0.35);
 }
 
 .history-item--longBreak {
-  border-left-color: var(--pomocode-long-break);
+  background: rgba(56, 189, 248, 0.06);
+  border-color: rgba(56, 189, 248, 0.22);
+}
+
+.history-item--longBreak:hover {
+  background: rgba(56, 189, 248, 0.09);
+  border-color: rgba(56, 189, 248, 0.35);
 }
 
 .history-item-main {

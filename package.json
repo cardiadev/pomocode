@@ -2,7 +2,7 @@
   "name": "pomocode",
   "displayName": "PomoCode",
   "description": "A dynamic, friendly Pomodoro timer for VS Code with live stats, streaks, and session history.",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "publisher": "cardiadev",
   "license": "MIT",
   "private": true,
