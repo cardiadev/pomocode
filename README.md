@@ -1,25 +1,24 @@
 # PomoCode
 
-A dynamic, friendly Pomodoro timer for VS Code with live stats, streaks, and session history.
+A dynamic, aesthetic Pomodoro timer for VS Code with custom themes, Google Sans typography, live streaks, and session history.
 
 ## Features
 
 - **Minimal status bar timer** — always visible; click it to open a quick-actions menu (start, pause, resume, skip, reset, or open the panel).
-- **Activity Bar panel** — a dedicated PomoCode icon opens a full panel with the timer, round progress, session controls, goals, history, streaks, and stats.
-- **Full Pomodoro cycle** — follows the standard technique: 4 completed focus sessions (with short breaks in between) make up a round, then a long break, then the round starts over. A round dot indicator shows where you are in the current round. Skipping a session moves the timer forward without falsely counting toward the round — only a focus session that runs to completion counts.
-- **Goals** — jot down what you're working towards and check them off, independent of your Pomodoro sessions.
-- **Streak calendar & badges** — click the streak badge for a Duolingo-style monthly calendar of your active days, plus unlockable milestone badges to keep you motivated.
-- **Notifications** — VS Code notifications announce when a session starts and ends, with an optional native macOS notification so you still see it when VS Code is in the background.
-- **Fully customizable** — durations, auto-start, notifications, and sound are all configurable from VS Code Settings or directly from the panel, kept in sync both ways.
-- **Per-profile isolation** — settings, history, and goals are scoped to your active VS Code Profile, so switching profiles gives you a clean, independent PomoCode state.
-- **Session history & stats** — every completed session is recorded; the panel shows today/week/all-time pomodoro and round counts, focused minutes, and your current daily streak.
-- **Themed to match VS Code** — the panel follows your active color theme automatically (light, dark, or high contrast), using the self-hosted Inter font.
+- **Activity Bar panel** — a dedicated PomoCode icon opens a full panel with 4 organized tabs: **Timer**, **Calendar**, **History**, and **Settings**.
+- **Interactive Cycle Tracker** — step-by-step badges track your entire cycle progression (`Focus 1` → `Break 1` → ... → `Long Break`) without getting stuck in loops.
+- **Customizable Color Themes & Fonts** — choose your primary accent, focus, short break, and long break colors with native color pickers, and select from modern fonts like Google Sans, Inter, Roboto, Outfit, and Fira Code.
+- **Daily Targets & Goals** — configure your daily pomodoro target, link active goals to focus sessions, and celebrate daily progress.
+- **Streak calendar & milestone badges** — inspect your monthly activity heat map with corner day badges and unlock achievements with Material Symbols iconography.
+- **Notifications & Sound Engine** — macOS native notifications with instant sound previewing (`afplay`) and in-panel audio cues.
+- **Backup & Data Management** — export your full data to JSON, copy to clipboard, or restore anytime.
+- **Per-profile isolation** — settings, history, and goals are scoped to your active VS Code Profile.
 
 ## Getting started
 
 1. Click the PomoCode icon in the Activity Bar (left sidebar).
 2. Press **Start** to begin a focus session.
-3. When a session ends, PomoCode shows a notification and automatically moves to the next session (break or focus), unless you've disabled auto-start.
+3. When a session ends, PomoCode notifies you and automatically advances the cycle.
 
 Click the status bar timer any time for a quick menu of actions, or use the Command Palette:
 
@@ -41,11 +40,17 @@ All settings are available under **Settings → Extensions → PomoCode**, or di
 | `pomocode.shortBreakDuration` | `5` | Length of a short break, in minutes. |
 | `pomocode.longBreakDuration` | `15` | Length of a long break, in minutes. |
 | `pomocode.sessionsBeforeLongBreak` | `4` | Number of focus sessions before a long break is triggered. |
+| `pomocode.dailyTargetPomodoros` | `8` | Daily target number of completed pomodoro focus sessions. |
+| `pomocode.accentColor` | `#f97316` | Primary accent color for buttons and active states. |
+| `pomocode.focusColor` | `#f97316` | Color used for focus sessions and indicators. |
+| `pomocode.shortBreakColor` | `#22c55e` | Color used for short break sessions. |
+| `pomocode.longBreakColor` | `#38bdf8` | Color used for long break sessions. |
+| `pomocode.fontFamily` | `Google Sans` | Font family used across the PomoCode panel interface. |
 | `pomocode.autoStartNextSession` | `false` | Automatically start the next session when the current one ends. |
 | `pomocode.enableNotifications` | `true` | Show a VS Code notification on session start/end. |
-| `pomocode.enableNativeNotifications` | `true` | macOS only: also show a native system notification, so you see it even when VS Code is in the background. |
-| `pomocode.nativeNotificationSound` | `Glass` | macOS only: which system sound plays with the native notification (`None` disables it). |
-| `pomocode.enableSound` | `true` | Play a sound in the panel when a session ends. |
+| `pomocode.enableNativeNotifications` | `true` | macOS only: show a native system notification. |
+| `pomocode.nativeNotificationSound` | `Glass` | macOS only: which system sound plays with the native notification. |
+| `pomocode.enableSound` | `true` | Play an audio cue in the panel when a session ends. |
 | `pomocode.completionSound` | `chime` | Tone style played in the panel: Chime, Bell, Digital, or Soft. |
 
 Settings, session history, and goals respect VS Code's **Profiles** feature: each profile keeps its own independent PomoCode state.

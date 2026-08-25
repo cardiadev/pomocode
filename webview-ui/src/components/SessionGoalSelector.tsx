@@ -1,5 +1,6 @@
 import { useState, type FormEvent, type ReactElement } from 'react';
 import type { Goal } from '../../../shared/protocol';
+import { TargetIcon, TomatoIcon, CheckIcon } from './Icons';
 
 interface SessionGoalSelectorProps {
   goals: Goal[];
@@ -47,7 +48,7 @@ export function SessionGoalSelector({
           onClick={() => setIsExpanded((prev) => !prev)}
           aria-expanded={isExpanded}
         >
-          <span className="session-goal-icon">🎯</span>
+          <TargetIcon size={14} className="session-goal-icon-svg" />
           <span className="session-goal-summary">
             {selectedGoals.length === 0
               ? 'Focusing on: (No goal selected)'
@@ -105,10 +106,15 @@ export function SessionGoalSelector({
                     className={`session-goal-option${isSelected ? ' session-goal-option--selected' : ''}`}
                     onClick={() => handleToggleGoal(goal.id)}
                   >
-                    <span className="session-goal-option-check">{isSelected ? '✓' : '○'}</span>
+                    <span className="session-goal-option-check">
+                      {isSelected ? <CheckIcon size={12} /> : '○'}
+                    </span>
                     <span className="session-goal-option-text">{goal.text}</span>
                     {(goal.pomodoroCount ?? 0) > 0 && (
-                      <span className="goal-pomo-badge">{goal.pomodoroCount}🍅</span>
+                      <span className="goal-pomo-badge">
+                        <span>{goal.pomodoroCount}</span>
+                        <TomatoIcon size={12} />
+                      </span>
                     )}
                   </button>
                 );

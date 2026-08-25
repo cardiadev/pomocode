@@ -2,6 +2,21 @@
 
 All notable changes to PomoCode are documented in this file.
 
+## [0.6.0] - 2026-08-25
+
+### Added
+
+- **Custom Theme Colors & Reset**: Added customizable color pickers in Settings for Accent/Active buttons, Focus sessions, Short breaks, and Long breaks with a single-click *Reset Colors to Default* action.
+- **Google Sans Typography & Font Customizer**: Defaulted to Google Sans across the extension with a font selector in Settings (Google Sans, Inter, Roboto, Outfit, Fira Code, System).
+- **Material Symbols Rounded Iconography**: Replaced all emojis throughout the app with sleek Material Symbols Rounded inline SVGs including custom Tomato, Flame, Coffee, Palm, Trophy, Star, Bolt, Target, and Check icons.
+- **Top Corner Notification Badges on Calendar**: Day numbers in the calendar grid are now pinned to the top-right corner as clean notification badges, keeping the center activity indicator steady and aligned.
+
+### Changed
+
+- **Vibrant History Cards**: Increased background and border vibrancy on session cards for better contrast and legibility.
+- **Modern Extension & Activity Bar Icons**: Upgraded the extension icon and activity bar icon to Material Symbol Rounded vector graphics.
+- **Refined Copy**: Updated extension description and tagline for clearer communication.
+
 ## [0.5.4] - 2026-08-25
 
 ### Changed

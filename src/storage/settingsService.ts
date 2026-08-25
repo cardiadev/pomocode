@@ -31,6 +31,11 @@ export class SettingsService {
       nativeNotificationSound: config.get<NativeNotificationSound>('nativeNotificationSound', 'Glass'),
       enableSound: config.get<boolean>('enableSound', true),
       completionSound: config.get<CompletionSound>('completionSound', 'chime'),
+      accentColor: config.get<string>('accentColor', '#f97316'),
+      focusColor: config.get<string>('focusColor', '#f97316'),
+      shortBreakColor: config.get<string>('shortBreakColor', '#22c55e'),
+      longBreakColor: config.get<string>('longBreakColor', '#38bdf8'),
+      fontFamily: config.get<string>('fontFamily', 'Google Sans'),
     };
   }
 

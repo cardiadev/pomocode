@@ -1,5 +1,6 @@
 import { useState, type ReactElement } from 'react';
 import type { TimerCommand, TimerSnapshot } from '../../../shared/protocol';
+import { WarningIcon } from './Icons';
 
 interface ControlButtonsProps {
   timer: TimerSnapshot;
@@ -46,7 +47,9 @@ export function ControlButtons({ timer, onCommand }: ControlButtonsProps): React
       {showResetConfirm && (
         <div className="confirm-modal-overlay" role="dialog" aria-modal="true">
           <div className="confirm-modal">
-            <div className="confirm-modal-icon">⚠️</div>
+            <div className="confirm-modal-icon">
+              <WarningIcon size={32} />
+            </div>
             <div className="confirm-modal-content">
               <h4>Reset Current Session?</h4>
               <p>Are you sure you want to reset the current timer? Your progress in this session will restart.</p>

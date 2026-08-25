@@ -3,6 +3,7 @@ import type { PomoCodeSettings } from '../../../shared/protocol';
 import { useDebouncedCallback } from '../hooks/useDebouncedCallback';
 import { playCompletionBeep } from '../audio';
 import { NumberField } from './NumberField';
+import { WarningIcon } from './Icons';
 
 const NATIVE_NOTIFICATION_SOUNDS: PomoCodeSettings['nativeNotificationSound'][] = [
   'None',
@@ -28,6 +29,22 @@ const COMPLETION_SOUNDS: { value: PomoCodeSettings['completionSound']; label: st
   { value: 'digital', label: 'Digital' },
   { value: 'soft', label: 'Soft' },
 ];
+
+const FONT_OPTIONS: { value: string; label: string }[] = [
+  { value: 'Google Sans', label: 'Google Sans (Default)' },
+  { value: 'Inter', label: 'Inter' },
+  { value: 'Roboto', label: 'Roboto' },
+  { value: 'Outfit', label: 'Outfit' },
+  { value: 'Fira Code', label: 'Fira Code (Monospace)' },
+  { value: 'system-ui', label: 'System Default' },
+];
+
+const DEFAULT_COLORS = {
+  accentColor: '#f97316',
+  focusColor: '#f97316',
+  shortBreakColor: '#22c55e',
+  longBreakColor: '#38bdf8',
+};
 
 interface SettingsFormProps {
   settings: PomoCodeSettings;
@@ -60,6 +77,19 @@ export function SettingsForm({
   function handleNumberChange(key: keyof PomoCodeSettings, value: number): void {
     setLocal((previous) => ({ ...previous, [key]: value }));
     debouncedUpdate({ [key]: value });
+  }
+
+  function handleColorChange(
+    key: 'accentColor' | 'focusColor' | 'shortBreakColor' | 'longBreakColor',
+    color: string
+  ): void {
+    setLocal((previous) => ({ ...previous, [key]: color }));
+    debouncedUpdate({ [key]: color });
+  }
+
+  function handleResetColors(): void {
+    setLocal((previous) => ({ ...previous, ...DEFAULT_COLORS }));
+    onUpdate(DEFAULT_COLORS);
   }
 
   function handleToggle(key: keyof PomoCodeSettings, checked: boolean): void {
@@ -141,6 +171,92 @@ export function SettingsForm({
           value={local.dailyTargetPomodoros}
           onChange={(val) => handleNumberChange('dailyTargetPomodoros', val)}
         />
+      </div>
+
+      <h2 className="section-title" style={{ marginTop: '20px' }}>
+        Appearance &amp; Theme
+      </h2>
+
+      <div className="theme-customization-card">
+        <div className="settings-field">
+          <span>Font family</span>
+          <select
+            value={local.fontFamily || 'Google Sans'}
+            onChange={(e) => handleSelectChange('fontFamily', e.target.value)}
+          >
+            {FONT_OPTIONS.map((font) => (
+              <option key={font.value} value={font.value}>
+                {font.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="color-pickers-grid">
+          <div className="color-picker-item">
+            <span className="color-picker-label">Accent / Active</span>
+            <div className="color-picker-control">
+              <input
+                type="color"
+                className="color-picker-input"
+                value={local.accentColor || '#f97316'}
+                onChange={(e) => handleColorChange('accentColor', e.target.value)}
+                aria-label="Accent Color"
+              />
+              <span className="color-picker-hex">{local.accentColor || '#f97316'}</span>
+            </div>
+          </div>
+
+          <div className="color-picker-item">
+            <span className="color-picker-label">Focus Session</span>
+            <div className="color-picker-control">
+              <input
+                type="color"
+                className="color-picker-input"
+                value={local.focusColor || '#f97316'}
+                onChange={(e) => handleColorChange('focusColor', e.target.value)}
+                aria-label="Focus Session Color"
+              />
+              <span className="color-picker-hex">{local.focusColor || '#f97316'}</span>
+            </div>
+          </div>
+
+          <div className="color-picker-item">
+            <span className="color-picker-label">Short Break</span>
+            <div className="color-picker-control">
+              <input
+                type="color"
+                className="color-picker-input"
+                value={local.shortBreakColor || '#22c55e'}
+                onChange={(e) => handleColorChange('shortBreakColor', e.target.value)}
+                aria-label="Short Break Color"
+              />
+              <span className="color-picker-hex">{local.shortBreakColor || '#22c55e'}</span>
+            </div>
+          </div>
+
+          <div className="color-picker-item">
+            <span className="color-picker-label">Long Break</span>
+            <div className="color-picker-control">
+              <input
+                type="color"
+                className="color-picker-input"
+                value={local.longBreakColor || '#38bdf8'}
+                onChange={(e) => handleColorChange('longBreakColor', e.target.value)}
+                aria-label="Long Break Color"
+              />
+              <span className="color-picker-hex">{local.longBreakColor || '#38bdf8'}</span>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          className="btn btn--secondary btn--sm reset-colors-btn"
+          onClick={handleResetColors}
+        >
+          Reset Colors to Default
+        </button>
       </div>
 
       <h2 className="section-title" style={{ marginTop: '20px' }}>
@@ -307,7 +423,9 @@ export function SettingsForm({
       {clearScopeToConfirm && (
         <div className="confirm-modal-overlay" role="dialog" aria-modal="true">
           <div className="confirm-modal">
-            <div className="confirm-modal-icon">⚠️</div>
+            <div className="confirm-modal-icon">
+              <WarningIcon size={32} />
+            </div>
             <div className="confirm-modal-content">
               <h4>{clearScopeLabels[clearScopeToConfirm].title}</h4>
               <p>{clearScopeLabels[clearScopeToConfirm].desc}</p>

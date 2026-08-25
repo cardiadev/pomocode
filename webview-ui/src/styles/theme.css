@@ -5,9 +5,9 @@
   --pomocode-border: var(--vscode-widget-border, var(--vscode-panel-border));
   --pomocode-card-bg: var(--vscode-sideBar-background, var(--vscode-editor-background));
 
-  --pomocode-accent: var(--vscode-button-background, #f97316);
-  --pomocode-accent-hover: var(--vscode-button-hoverBackground, #ea580c);
-  --pomocode-accent-fg: var(--vscode-button-foreground, #ffffff);
+  --pomocode-accent: #f97316;
+  --pomocode-accent-hover: #ea580c;
+  --pomocode-accent-fg: #ffffff;
 
   --pomocode-focus: #f97316;
   --pomocode-short-break: #22c55e;
@@ -18,5 +18,5 @@
   --pomocode-input-border: var(--vscode-input-border, var(--pomocode-border));
 
   --pomocode-radius: 10px;
-  --pomocode-font: 'Inter', var(--vscode-font-family), sans-serif;
+  --pomocode-font: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', var(--vscode-font-family), sans-serif;
 }

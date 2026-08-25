@@ -15,6 +15,7 @@ import { HistoryList } from './components/HistoryList';
 import { CalendarView } from './components/CalendarView';
 import { SettingsForm } from './components/SettingsForm';
 import { Footer } from './components/Footer';
+import { TomatoIcon } from './components/Icons';
 
 export function App(): ReactElement {
   const [state, dispatch] = useReducer(appReducer, initialAppState);
@@ -112,12 +113,22 @@ export function App(): ReactElement {
 
   const activeGoalsCount = state.goals.filter((g) => !g.completed).length;
 
+  const dynamicStyles = {
+    '--pomocode-accent': state.settings.accentColor || '#f97316',
+    '--pomocode-focus': state.settings.focusColor || '#f97316',
+    '--pomocode-short-break': state.settings.shortBreakColor || '#22c55e',
+    '--pomocode-long-break': state.settings.longBreakColor || '#38bdf8',
+    '--pomocode-font': state.settings.fontFamily
+      ? `"${state.settings.fontFamily}", "Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`
+      : '"Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+  } as React.CSSProperties;
+
   return (
-    <div className="app">
+    <div className="app" style={dynamicStyles}>
       {/* Top Header */}
       <header className="app-header">
         <div className="app-brand">
-          <span className="app-logo">🍅</span>
+          <TomatoIcon size={20} className="app-logo-svg" />
           <h1>PomoCode</h1>
         </div>
         <StreakBadge

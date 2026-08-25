@@ -1,8 +1,8 @@
 {
   "name": "pomocode",
   "displayName": "PomoCode",
-  "description": "A dynamic, friendly Pomodoro timer for VS Code with live stats, streaks, and session history.",
-  "version": "0.5.4",
+  "description": "A dynamic, aesthetic Pomodoro timer for VS Code with custom themes, Google Sans typography, live streaks, and session history.",
+  "version": "0.6.0",
   "publisher": "cardiadev",
   "license": "MIT",
   "private": true,
@@ -166,6 +166,36 @@
           ],
           "scope": "window",
           "description": "Tone style played in the panel when a session ends."
+        },
+        "pomocode.accentColor": {
+          "type": "string",
+          "default": "#f97316",
+          "scope": "window",
+          "description": "Primary accent color for buttons and active states."
+        },
+        "pomocode.focusColor": {
+          "type": "string",
+          "default": "#f97316",
+          "scope": "window",
+          "description": "Color used for focus sessions and indicators."
+        },
+        "pomocode.shortBreakColor": {
+          "type": "string",
+          "default": "#22c55e",
+          "scope": "window",
+          "description": "Color used for short break sessions."
+        },
+        "pomocode.longBreakColor": {
+          "type": "string",
+          "default": "#38bdf8",
+          "scope": "window",
+          "description": "Color used for long break sessions."
+        },
+        "pomocode.fontFamily": {
+          "type": "string",
+          "default": "Google Sans",
+          "scope": "window",
+          "description": "Font family used across the PomoCode panel interface."
         }
       }
     },

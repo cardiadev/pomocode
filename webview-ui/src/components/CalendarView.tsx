@@ -1,7 +1,16 @@
 import { useMemo, useState, type ReactElement } from 'react';
 import type { HistoryEntry, StatsSnapshot } from '../../../shared/protocol';
 import { getCompletedFocusDayKeys, toLocalDayKey, formatDayLabel } from '../../../shared/statsUtils';
-import { BADGES } from '../../../shared/badges';
+import { BADGES, type BadgeIconType } from '../../../shared/badges';
+import {
+  FlameIcon,
+  TomatoIcon,
+  TrophyIcon,
+  StarIcon,
+  BoltIcon,
+  TargetIcon,
+  MedalIcon,
+} from './Icons';
 
 interface CalendarViewProps {
   entries: HistoryEntry[];
@@ -22,6 +31,27 @@ function buildMonthGrid(year: number, month: number): (Date | null)[] {
     cells.push(new Date(year, month, day));
   }
   return cells;
+}
+
+function renderBadgeIcon(iconType: BadgeIconType, unlocked: boolean): ReactElement {
+  const size = 26;
+  const className = `badge-svg-icon${unlocked ? ' badge-svg-icon--unlocked' : ''}`;
+  switch (iconType) {
+    case 'first':
+      return <TomatoIcon size={size} className={className} />;
+    case 'sessions-10':
+      return <StarIcon size={size} className={className} />;
+    case 'sessions-50':
+      return <BoltIcon size={size} className={className} />;
+    case 'sessions-100':
+      return <TrophyIcon size={size} className={className} />;
+    case 'streak-3':
+      return <TargetIcon size={size} className={className} />;
+    case 'streak-7':
+      return <FlameIcon size={size} className={className} />;
+    case 'streak-30':
+      return <MedalIcon size={size} className={className} />;
+  }
 }
 
 export function CalendarView({ entries, stats }: CalendarViewProps): ReactElement {
@@ -60,9 +90,9 @@ export function CalendarView({ entries, stats }: CalendarViewProps): ReactElemen
       {/* Streak Hero Banner */}
       <div className="streak-hero-card">
         <div className="streak-hero-content">
-          <span className="streak-hero-flame" aria-hidden="true">
-            🔥
-          </span>
+          <div className="streak-hero-flame-box">
+            <FlameIcon size={32} className="streak-hero-flame-svg" />
+          </div>
           <div className="streak-hero-details">
             <span className="streak-hero-count">{stats.currentStreakDays}</span>
             <span className="streak-hero-label">day streak</span>
@@ -142,11 +172,14 @@ export function CalendarView({ entries, stats }: CalendarViewProps): ReactElemen
                 onClick={() => setSelectedDayKey(dayKey)}
                 title={`${date.toLocaleDateString()}: ${completedFocusCount} focus sessions`}
               >
-                <span className="calendar-cell-day">{date.getDate()}</span>
+                <span className="calendar-cell-day-badge">{date.getDate()}</span>
                 {completedFocusCount > 0 && (
-                  <span className="calendar-cell-badge">
-                    🔥{completedFocusCount > 1 ? completedFocusCount : ''}
-                  </span>
+                  <div className="calendar-cell-center">
+                    <FlameIcon size={14} className="calendar-cell-flame-icon" />
+                    {completedFocusCount > 1 && (
+                      <span className="calendar-cell-count">{completedFocusCount}</span>
+                    )}
+                  </div>
                 )}
               </button>
             );
@@ -159,9 +192,9 @@ export function CalendarView({ entries, stats }: CalendarViewProps): ReactElemen
         <div className="day-inspector-header">
           <h3 className="day-inspector-title">{formatDayLabel(selectedDayKey)} ({selectedDayKey})</h3>
           <div className="day-inspector-summary">
-            <span className="day-chip">🔥 {selectedFocusEntries.length} focus</span>
-            <span className="day-chip">⏱️ {selectedFocusMinutes}m</span>
-            {selectedRounds > 0 && <span className="day-chip">🌴 {selectedRounds} round</span>}
+            <span className="day-chip">{selectedFocusEntries.length} focus</span>
+            <span className="day-chip">{selectedFocusMinutes}m</span>
+            {selectedRounds > 0 && <span className="day-chip">{selectedRounds} round</span>}
           </div>
         </div>
 
@@ -171,10 +204,10 @@ export function CalendarView({ entries, stats }: CalendarViewProps): ReactElemen
           <ul className="day-inspector-list">
             {selectedDayEntries.map((entry) => (
               <li key={entry.id} className={`day-inspector-item day-inspector-item--${entry.type}`}>
-                <span className="day-item-type">{entry.type === 'focus' ? '🔥 Focus' : entry.type === 'shortBreak' ? '☕ Short Break' : '🌴 Long Break'}</span>
+                <span className="day-item-type">{entry.type === 'focus' ? 'Focus' : entry.type === 'shortBreak' ? 'Short Break' : 'Long Break'}</span>
                 <span className="day-item-duration">{entry.durationMinutes}m</span>
                 {entry.goalTitles && entry.goalTitles.length > 0 && (
-                  <span className="day-item-goal">🎯 {entry.goalTitles.join(', ')}</span>
+                  <span className="day-item-goal">{entry.goalTitles.join(', ')}</span>
                 )}
                 <span className={`day-item-status ${entry.completed ? 'status-ok' : 'status-skip'}`}>
                   {entry.completed ? 'Completed' : 'Skipped'}
@@ -197,7 +230,7 @@ export function CalendarView({ entries, stats }: CalendarViewProps): ReactElemen
                 className={`badge-tile${unlocked ? ' badge-tile--unlocked' : ''}`}
                 title={badge.description}
               >
-                <span className="badge-emoji">{badge.emoji}</span>
+                <div className="badge-icon-box">{renderBadgeIcon(badge.iconType, unlocked)}</div>
                 <span className="badge-label">{badge.label}</span>
                 <span className="badge-status">{unlocked ? 'Unlocked' : 'Locked'}</span>
               </div>

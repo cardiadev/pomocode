@@ -46,6 +46,11 @@ export interface PomoCodeSettings {
   nativeNotificationSound: NativeNotificationSound;
   enableSound: boolean;
   completionSound: CompletionSound;
+  accentColor?: string;
+  focusColor?: string;
+  shortBreakColor?: string;
+  longBreakColor?: string;
+  fontFamily?: string;
 }
 
 export interface HistoryEntry {

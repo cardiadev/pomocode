@@ -1,5 +1,6 @@
 import { useState, type FormEvent, type ReactElement } from 'react';
 import type { Goal } from '../../../shared/protocol';
+import { CheckIcon, FlameIcon } from './Icons';
 
 interface GoalsListProps {
   goals: Goal[];
@@ -58,13 +59,14 @@ export function GoalsList({ goals, onAdd, onComplete, onReopen, onRemove }: Goal
                 aria-label={`Complete goal: ${goal.text}`}
                 onClick={() => onComplete(goal.id)}
               >
-                ✓
+                <CheckIcon size={12} />
               </button>
               <div className="goal-content">
                 <span className="goal-text">{goal.text}</span>
                 {(goal.pomodoroCount ?? 0) > 0 && (
                   <span className="goal-pomo-count" title={`${goal.pomodoroCount} pomodoros dedicated to this goal`}>
-                    🔥 {goal.pomodoroCount}
+                    <FlameIcon size={11} className="goal-flame-icon" />
+                    <span>{goal.pomodoroCount}</span>
                   </span>
                 )}
               </div>
@@ -99,11 +101,16 @@ export function GoalsList({ goals, onAdd, onComplete, onReopen, onRemove }: Goal
             <ul className="goals-items goals-items--completed">
               {completedGoals.map((goal) => (
                 <li key={goal.id} className="goal-item goal-item--completed">
-                  <span className="goal-completed-check">✓</span>
+                  <span className="goal-completed-check">
+                    <CheckIcon size={11} />
+                  </span>
                   <div className="goal-content">
                     <span className="goal-text">{goal.text}</span>
                     {(goal.pomodoroCount ?? 0) > 0 && (
-                      <span className="goal-pomo-count">🔥 {goal.pomodoroCount}</span>
+                      <span className="goal-pomo-count">
+                        <FlameIcon size={11} className="goal-flame-icon" />
+                        <span>{goal.pomodoroCount}</span>
+                      </span>
                     )}
                   </div>
                   <div className="goal-actions">

@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import type { SessionType } from '../../../shared/protocol';
+import { FlameIcon, CoffeeIcon, PalmIcon, CheckIcon } from './Icons';
 
 interface CycleTrackerProps {
   completedFocusSessionsInCycle: number;
@@ -16,8 +17,21 @@ interface StepItem {
   stepNumber: number;
   label: string;
   type: SessionType;
-  icon: string;
   status: 'completed' | 'current' | 'upcoming';
+}
+
+function renderStepIcon(type: SessionType, status: StepItem['status']): ReactElement {
+  if (status === 'completed') {
+    return <CheckIcon size={12} className="cycle-step-check" />;
+  }
+  switch (type) {
+    case 'focus':
+      return <FlameIcon size={12} />;
+    case 'shortBreak':
+      return <CoffeeIcon size={12} />;
+    case 'longBreak':
+      return <PalmIcon size={12} />;
+  }
 }
 
 export function CycleTracker({
@@ -45,7 +59,6 @@ export function CycleTracker({
       stepNumber: focusStepNum,
       label: `Focus ${i + 1}`,
       type: 'focus',
-      icon: '🔥',
       status: focusStatus,
     });
 
@@ -62,7 +75,6 @@ export function CycleTracker({
         stepNumber: breakStepNum,
         label: `Break ${i + 1}`,
         type: 'shortBreak',
-        icon: '☕',
         status: breakStatus,
       });
     } else {
@@ -78,7 +90,6 @@ export function CycleTracker({
         stepNumber: longBreakStepNum,
         label: 'Long Break',
         type: 'longBreak',
-        icon: '🌴',
         status: lbStatus,
       });
     }
@@ -133,7 +144,7 @@ export function CycleTracker({
               title={`${step.label} (${step.status})`}
               role="listitem"
             >
-              <span className="cycle-step-icon">{step.status === 'completed' ? '✓' : step.icon}</span>
+              <span className="cycle-step-icon">{renderStepIcon(step.type, step.status)}</span>
               <span className="cycle-step-label">{step.label}</span>
             </div>
           );
