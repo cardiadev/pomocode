@@ -11,5 +11,7 @@ tsconfig*.json
 node_modules/**
 .github/**
 .gitignore
+.codegraph/**
+.memo/**
 bun.lock
 *.vsix

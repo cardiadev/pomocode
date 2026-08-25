@@ -13,4 +13,5 @@ export interface SessionCompletedEvent {
   endedAt: string;
   durationMinutes: number;
   completed: boolean;
+  goalIds?: string[];
 }

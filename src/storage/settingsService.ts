@@ -24,6 +24,7 @@ export class SettingsService {
       shortBreakDuration: config.get<number>('shortBreakDuration', 5),
       longBreakDuration: config.get<number>('longBreakDuration', 15),
       sessionsBeforeLongBreak: config.get<number>('sessionsBeforeLongBreak', 4),
+      dailyTargetPomodoros: config.get<number>('dailyTargetPomodoros', 8),
       autoStartNextSession: config.get<boolean>('autoStartNextSession', false),
       enableNotifications: config.get<boolean>('enableNotifications', true),
       enableNativeNotifications: config.get<boolean>('enableNativeNotifications', true),

@@ -28,6 +28,7 @@ export class TimerEngine {
   private remainingSeconds: number;
   private totalSeconds: number;
   private completedFocusSessionsInCycle = 0;
+  private activeGoalIds: string[] = [];
   private sessionStartedAt: string | undefined;
   private intervalHandle: ReturnType<typeof setInterval> | undefined;
 
@@ -37,15 +38,36 @@ export class TimerEngine {
   }
 
   getSnapshot(): TimerSnapshot {
+    const settings = this.getSettings();
+    const sessionsBeforeLongBreak = settings.sessionsBeforeLongBreak;
+    const totalCycleSteps = sessionsBeforeLongBreak * 2;
+    let cycleStep = 1;
+
+    if (this.sessionType === 'focus') {
+      cycleStep = Math.min(this.completedFocusSessionsInCycle * 2 + 1, totalCycleSteps - 1);
+    } else if (this.sessionType === 'shortBreak') {
+      cycleStep = Math.min(this.completedFocusSessionsInCycle * 2, totalCycleSteps - 1);
+    } else if (this.sessionType === 'longBreak') {
+      cycleStep = totalCycleSteps;
+    }
+
     return {
       status: this.status,
       sessionType: this.sessionType,
       remainingSeconds: this.remainingSeconds,
       totalSeconds: this.totalSeconds,
       completedFocusSessionsInCycle: this.completedFocusSessionsInCycle,
-      sessionsBeforeLongBreak: this.getSettings().sessionsBeforeLongBreak,
+      sessionsBeforeLongBreak,
+      cycleStep,
+      totalCycleSteps,
+      activeGoalIds: [...this.activeGoalIds],
       justCompleted: false,
     };
+  }
+
+  setActiveGoalIds(goalIds: string[]): void {
+    this.activeGoalIds = goalIds;
+    this.emitState(false);
   }
 
   start(): void {
@@ -137,16 +159,26 @@ export class TimerEngine {
     const elapsedSeconds = this.totalSeconds - Math.max(this.remainingSeconds, 0);
     const durationMinutes = Math.round(elapsedSeconds / 60);
     const completedSessionType = this.sessionType;
+    const settings = this.getSettings();
 
-    // Only a focus session that ran to completion counts toward the round of
-    // sessionsBeforeLongBreak — skipping a session moves the timer forward
-    // without advancing (or corrupting) the round progress.
-    if (completedSessionType === 'focus' && naturallyCompleted) {
+    // Advancing the round progress when a focus session ends (either naturally or skipped)
+    if (completedSessionType === 'focus') {
       this.completedFocusSessionsInCycle += 1;
     }
 
-    const settings = this.getSettings();
-    const nextSessionType = this.nextSessionType(settings);
+    let nextSessionType: SessionType = 'focus';
+    if (completedSessionType === 'focus') {
+      if (this.completedFocusSessionsInCycle >= settings.sessionsBeforeLongBreak) {
+        nextSessionType = 'longBreak';
+      } else {
+        nextSessionType = 'shortBreak';
+      }
+    } else if (completedSessionType === 'shortBreak') {
+      nextSessionType = 'focus';
+    } else if (completedSessionType === 'longBreak') {
+      this.completedFocusSessionsInCycle = 0;
+      nextSessionType = 'focus';
+    }
 
     this.onSessionCompletedEmitter.fire({
       sessionType: completedSessionType,
@@ -155,6 +187,7 @@ export class TimerEngine {
       endedAt,
       durationMinutes,
       completed: naturallyCompleted,
+      goalIds: completedSessionType === 'focus' ? [...this.activeGoalIds] : undefined,
     });
 
     this.sessionType = nextSessionType;
@@ -175,18 +208,6 @@ export class TimerEngine {
     if (settings.autoStartNextSession) {
       this.onSessionStartedEmitter.fire(this.sessionType);
     }
-  }
-
-  private nextSessionType(settings: PomoCodeSettings): SessionType {
-    if (this.sessionType === 'focus') {
-      const reachedLongBreak = this.completedFocusSessionsInCycle >= settings.sessionsBeforeLongBreak;
-      if (reachedLongBreak) {
-        this.completedFocusSessionsInCycle = 0;
-        return 'longBreak';
-      }
-      return 'shortBreak';
-    }
-    return 'focus';
   }
 
   private emitState(justCompleted: boolean): void {

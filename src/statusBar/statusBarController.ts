@@ -33,6 +33,9 @@ export class StatusBarController implements vscode.Disposable {
       totalSeconds: 0,
       completedFocusSessionsInCycle: 0,
       sessionsBeforeLongBreak: 4,
+      cycleStep: 1,
+      totalCycleSteps: 8,
+      activeGoalIds: [],
       justCompleted: false,
     });
     this.item.show();

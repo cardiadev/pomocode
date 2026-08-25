@@ -24,6 +24,17 @@ export class HistoryStore {
     this.onDidChangeEmitter.fire(entries);
   }
 
+  async replaceHistory(newEntries: HistoryEntry[]): Promise<void> {
+    const entries = newEntries.slice(-MAX_ENTRIES);
+    await this.globalState.update(HISTORY_KEY, entries);
+    this.onDidChangeEmitter.fire(entries);
+  }
+
+  async clear(): Promise<void> {
+    await this.globalState.update(HISTORY_KEY, []);
+    this.onDidChangeEmitter.fire([]);
+  }
+
   dispose(): void {
     this.onDidChangeEmitter.dispose();
   }

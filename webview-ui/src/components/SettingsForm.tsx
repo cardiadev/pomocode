@@ -31,9 +31,18 @@ const COMPLETION_SOUNDS: { value: PomoCodeSettings['completionSound']; label: st
 interface SettingsFormProps {
   settings: PomoCodeSettings;
   onUpdate: (partial: Partial<PomoCodeSettings>) => void;
+  onExportJson: () => void;
+  onCopyJson: () => void;
+  onImportJson: () => void;
 }
 
-export function SettingsForm({ settings, onUpdate }: SettingsFormProps): ReactElement {
+export function SettingsForm({
+  settings,
+  onUpdate,
+  onExportJson,
+  onCopyJson,
+  onImportJson,
+}: SettingsFormProps): ReactElement {
   const [local, setLocal] = useState(settings);
 
   useEffect(() => {
@@ -63,11 +72,11 @@ export function SettingsForm({ settings, onUpdate }: SettingsFormProps): ReactEl
 
   return (
     <div className="settings-form">
-      <h2 className="section-title">Settings</h2>
+      <h2 className="section-title">Timer &amp; Targets</h2>
 
       <div className="settings-grid">
         <label className="settings-field">
-          <span>Focus (min)</span>
+          <span>Focus duration (min)</span>
           <input
             type="number"
             min={1}
@@ -100,7 +109,7 @@ export function SettingsForm({ settings, onUpdate }: SettingsFormProps): ReactEl
         </label>
 
         <label className="settings-field">
-          <span>Sessions before long break</span>
+          <span>Pomodoros per round</span>
           <input
             type="number"
             min={1}
@@ -109,7 +118,22 @@ export function SettingsForm({ settings, onUpdate }: SettingsFormProps): ReactEl
             onChange={(event) => handleNumberChange('sessionsBeforeLongBreak', event.target.value)}
           />
         </label>
+
+        <label className="settings-field">
+          <span>Daily pomodoro target</span>
+          <input
+            type="number"
+            min={1}
+            max={50}
+            value={local.dailyTargetPomodoros}
+            onChange={(event) => handleNumberChange('dailyTargetPomodoros', event.target.value)}
+          />
+        </label>
       </div>
+
+      <h2 className="section-title" style={{ marginTop: '20px' }}>
+        Notifications &amp; Sound
+      </h2>
 
       <div className="settings-toggles">
         <label className="settings-toggle">
@@ -127,7 +151,7 @@ export function SettingsForm({ settings, onUpdate }: SettingsFormProps): ReactEl
             checked={local.enableNotifications}
             onChange={(event) => handleToggle('enableNotifications', event.target.checked)}
           />
-          <span>Show notifications</span>
+          <span>Show VS Code notifications</span>
         </label>
 
         <label className="settings-toggle">
@@ -144,7 +168,12 @@ export function SettingsForm({ settings, onUpdate }: SettingsFormProps): ReactEl
             <span>Native notification sound</span>
             <select
               value={local.nativeNotificationSound}
-              onChange={(event) => handleSelectChange('nativeNotificationSound', event.target.value as PomoCodeSettings['nativeNotificationSound'])}
+              onChange={(event) =>
+                handleSelectChange(
+                  'nativeNotificationSound',
+                  event.target.value as PomoCodeSettings['nativeNotificationSound'],
+                )
+              }
             >
               {NATIVE_NOTIFICATION_SOUNDS.map((sound) => (
                 <option key={sound} value={sound}>
@@ -161,7 +190,7 @@ export function SettingsForm({ settings, onUpdate }: SettingsFormProps): ReactEl
             checked={local.enableSound}
             onChange={(event) => handleToggle('enableSound', event.target.checked)}
           />
-          <span>Play sound (panel must be open)</span>
+          <span>Play audio sound in panel</span>
         </label>
 
         {local.enableSound && (
@@ -183,6 +212,28 @@ export function SettingsForm({ settings, onUpdate }: SettingsFormProps): ReactEl
             </select>
           </label>
         )}
+      </div>
+
+      <h2 className="section-title" style={{ marginTop: '20px' }}>
+        Data Management (JSON Export &amp; Backup)
+      </h2>
+
+      <div className="data-management-card">
+        <p className="data-management-desc">
+          All your goals, session history, and settings can be exported to a portable JSON format or restored from backup.
+        </p>
+
+        <div className="data-actions-grid">
+          <button type="button" className="btn btn--primary" onClick={onExportJson}>
+            💾 Export JSON File
+          </button>
+          <button type="button" className="btn btn--secondary" onClick={onCopyJson}>
+            📋 Copy JSON to Clipboard
+          </button>
+          <button type="button" className="btn btn--secondary" onClick={onImportJson}>
+            📥 Import Backup JSON
+          </button>
+        </div>
       </div>
     </div>
   );

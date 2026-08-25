@@ -2,6 +2,28 @@
 
 All notable changes to PomoCode are documented in this file.
 
+## [0.5.0] - 2026-08-25
+
+### Added
+
+- **Modern Tabbed Navigation**: Seamless switching between **Timer (Dashboard)**, **Calendar & Badges**, **Day-by-day History**, and **Settings & Data**.
+- **Cycle & Event Step Tracker**: Full visual breakdown of each element in a Pomodoro round (`Focus 1 → Break 1 → ... → Focus N → Long Break`) with live progress and daily target tracking.
+- **Daily Pomodoro Target**: Configure daily pomodoro target in settings with live progress bar in the dashboard.
+- **Global Goals Management & Session Linking**:
+  - Mark goals completed (`✓`) to archive them to a collapsible completed list with reopening (`↺`) and deletion.
+  - Link active goals to current focus sessions directly from the timer dashboard.
+  - Track pomodoros dedicated per goal.
+- **Day-by-Day Grouped History**: Chronological daily cards with daily focus minutes, session counts, round totals, search, filters, and goal tags.
+- **Interactive Calendar Tab**: Full-view monthly calendar with daily focus heatmap, day details inspector, and achievement badges.
+- **JSON Data Management & Backup**:
+  - Export complete data backup to a standalone `.json` file (`pomocode.exportData`).
+  - Copy JSON backup to clipboard.
+  - Import and restore data from JSON backup (`pomocode.importData`).
+
+### Fixed
+
+- **Skip Flow Progression**: Skipping a focus session now properly advances the round state machine through short breaks and long breaks to complete the cycle without getting stuck in an endless focus/shortBreak loop.
+
 ## [0.4.0] - 2026-08-25
 
 ### Added

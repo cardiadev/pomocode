@@ -8,6 +8,34 @@ export function toLocalDayKey(isoDate: string): string {
   return `${year}-${month}-${day}`;
 }
 
+export function formatDayLabel(dayKey: string): string {
+  const parts = dayKey.split('-').map(Number);
+  const year = parts[0] ?? new Date().getFullYear();
+  const month = parts[1] ?? 1;
+  const day = parts[2] ?? 1;
+  const date = new Date(year, month - 1, day);
+  const today = new Date();
+  const todayKey = toLocalDayKey(today.toISOString());
+
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayKey = toLocalDayKey(yesterday.toISOString());
+
+  if (dayKey === todayKey) {
+    return 'Today';
+  }
+  if (dayKey === yesterdayKey) {
+    return 'Yesterday';
+  }
+
+  return date.toLocaleDateString(undefined, {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    year: date.getFullYear() !== today.getFullYear() ? 'numeric' : undefined,
+  });
+}
+
 function startOfLocalWeek(reference: Date): Date {
   const dayIndex = reference.getDay();
   const start = new Date(reference);
@@ -39,7 +67,61 @@ export function getCompletedFocusDayKeys(entries: HistoryEntry[]): Set<string> {
   return keys;
 }
 
-export function computeStats(entries: HistoryEntry[]): StatsSnapshot {
+export interface DayHistoryGroup {
+  dayKey: string;
+  dateLabel: string;
+  totalFocusMinutes: number;
+  completedFocusCount: number;
+  roundsCompleted: number;
+  entries: HistoryEntry[];
+}
+
+export function groupHistoryByDay(entries: HistoryEntry[]): DayHistoryGroup[] {
+  const groupsMap = new Map<string, HistoryEntry[]>();
+
+  // Process in reverse chronological order
+  for (let i = entries.length - 1; i >= 0; i -= 1) {
+    const entry = entries[i];
+    if (!entry) {
+      continue;
+    }
+    const key = toLocalDayKey(entry.endedAt);
+    const list = groupsMap.get(key) ?? [];
+    list.push(entry);
+    groupsMap.set(key, list);
+  }
+
+  const result: DayHistoryGroup[] = [];
+  for (const [dayKey, dayEntries] of groupsMap.entries()) {
+    let totalFocusMinutes = 0;
+    let completedFocusCount = 0;
+    let roundsCompleted = 0;
+
+    for (const item of dayEntries) {
+      if (item.type === 'focus') {
+        if (item.completed) {
+          completedFocusCount += 1;
+        }
+        totalFocusMinutes += item.durationMinutes;
+      } else if (item.type === 'longBreak' && item.completed) {
+        roundsCompleted += 1;
+      }
+    }
+
+    result.push({
+      dayKey,
+      dateLabel: formatDayLabel(dayKey),
+      totalFocusMinutes,
+      completedFocusCount,
+      roundsCompleted,
+      entries: dayEntries,
+    });
+  }
+
+  return result;
+}
+
+export function computeStats(entries: HistoryEntry[], dailyTarget = 8): StatsSnapshot {
   const now = new Date();
   const todayKey = toLocalDayKey(now.toISOString());
   const weekStart = startOfLocalWeek(now);
@@ -85,5 +167,6 @@ export function computeStats(entries: HistoryEntry[]): StatsSnapshot {
     currentStreakDays: computeStreakDays(completedFocusDayKeys),
     roundsCompletedToday,
     roundsCompletedAllTime: completedRoundEntries.length,
+    dailyTargetPomodoros: dailyTarget,
   };
 }

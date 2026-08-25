@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import type { TimerEngine } from '../timer/timerEngine';
 import type { HistoryStore } from '../storage/historyStore';
+import type { DataService } from '../storage/dataService';
 import { computeStats } from '../../shared/statsUtils';
 
 interface QuickMenuItem extends vscode.QuickPickItem {
@@ -13,7 +14,11 @@ function formatTime(totalSeconds: number): string {
   return `${minutes}:${String(seconds).padStart(2, '0')}`;
 }
 
-async function showQuickMenu(timerEngine: TimerEngine, historyStore: HistoryStore): Promise<void> {
+async function showQuickMenu(
+  timerEngine: TimerEngine,
+  historyStore: HistoryStore,
+  dataService: DataService,
+): Promise<void> {
   const snapshot = timerEngine.getSnapshot();
   const stats = computeStats(historyStore.getAll());
   const items: QuickMenuItem[] = [];
@@ -24,11 +29,11 @@ async function showQuickMenu(timerEngine: TimerEngine, historyStore: HistoryStor
       : Math.min(snapshot.completedFocusSessionsInCycle + 1, snapshot.sessionsBeforeLongBreak);
 
   items.push({
-    label: `$(flame) ${stats.todayCount} pomodoros today · ${stats.roundsCompletedToday} rounds today · ${stats.currentStreakDays} day streak`,
+    label: `$(flame) ${stats.todayCount}/${stats.dailyTargetPomodoros} pomodoros today · ${stats.roundsCompletedToday} rounds · ${stats.currentStreakDays}d streak`,
     kind: vscode.QuickPickItemKind.Separator,
   });
   items.push({
-    label: `$(sync) Round ${roundPosition} of ${snapshot.sessionsBeforeLongBreak}`,
+    label: `$(sync) Round ${roundPosition} of ${snapshot.sessionsBeforeLongBreak} (Step ${snapshot.cycleStep}/${snapshot.totalCycleSteps})`,
     kind: vscode.QuickPickItemKind.Separator,
   });
 
@@ -50,6 +55,16 @@ async function showQuickMenu(timerEngine: TimerEngine, historyStore: HistoryStor
     action: () => void vscode.commands.executeCommand('pomocode.panelView.focus'),
   });
 
+  items.push({
+    label: '$(export) Export Data (JSON)',
+    action: () => void dataService.exportToFile(),
+  });
+
+  items.push({
+    label: '$(import) Import Data (JSON)',
+    action: () => void dataService.importFromFile(),
+  });
+
   const title =
     snapshot.status === 'idle' ? 'PomoCode' : `PomoCode — ${formatTime(snapshot.remainingSeconds)} remaining`;
 
@@ -65,6 +80,7 @@ export function registerCommands(
   context: vscode.ExtensionContext,
   timerEngine: TimerEngine,
   historyStore: HistoryStore,
+  dataService: DataService,
 ): void {
   context.subscriptions.push(
     vscode.commands.registerCommand('pomocode.start', () => timerEngine.start()),
@@ -72,9 +88,11 @@ export function registerCommands(
     vscode.commands.registerCommand('pomocode.resume', () => timerEngine.resume()),
     vscode.commands.registerCommand('pomocode.reset', () => timerEngine.reset()),
     vscode.commands.registerCommand('pomocode.skip', () => timerEngine.skip()),
+    vscode.commands.registerCommand('pomocode.exportData', () => void dataService.exportToFile()),
+    vscode.commands.registerCommand('pomocode.importData', () => void dataService.importFromFile()),
     vscode.commands.registerCommand('pomocode.openPanel', () => {
       void vscode.commands.executeCommand('pomocode.panelView.focus');
     }),
-    vscode.commands.registerCommand('pomocode.showQuickMenu', () => void showQuickMenu(timerEngine, historyStore)),
+    vscode.commands.registerCommand('pomocode.showQuickMenu', () => void showQuickMenu(timerEngine, historyStore, dataService)),
   );
 }

@@ -28,6 +28,9 @@ export interface TimerSnapshot {
   totalSeconds: number;
   completedFocusSessionsInCycle: number;
   sessionsBeforeLongBreak: number;
+  cycleStep: number;
+  totalCycleSteps: number;
+  activeGoalIds: string[];
   justCompleted: boolean;
 }
 
@@ -36,6 +39,7 @@ export interface PomoCodeSettings {
   shortBreakDuration: number;
   longBreakDuration: number;
   sessionsBeforeLongBreak: number;
+  dailyTargetPomodoros: number;
   autoStartNextSession: boolean;
   enableNotifications: boolean;
   enableNativeNotifications: boolean;
@@ -51,6 +55,8 @@ export interface HistoryEntry {
   endedAt: string;
   durationMinutes: number;
   completed: boolean;
+  goalIds?: string[];
+  goalTitles?: string[];
 }
 
 export interface StatsSnapshot {
@@ -63,6 +69,7 @@ export interface StatsSnapshot {
   currentStreakDays: number;
   roundsCompletedToday: number;
   roundsCompletedAllTime: number;
+  dailyTargetPomodoros: number;
 }
 
 export interface Goal {
@@ -70,6 +77,16 @@ export interface Goal {
   text: string;
   completed: boolean;
   createdAt: string;
+  completedAt?: string;
+  pomodoroCount?: number;
+}
+
+export interface PomoCodeExportData {
+  version: string;
+  exportedAt: string;
+  settings: PomoCodeSettings;
+  goals: Goal[];
+  history: HistoryEntry[];
 }
 
 export type TimerCommand = 'start' | 'pause' | 'resume' | 'reset' | 'skip';
@@ -79,13 +96,20 @@ export type HostMessage =
   | { type: 'settings/sync'; payload: PomoCodeSettings }
   | { type: 'history/sync'; payload: { entries: HistoryEntry[]; stats: StatsSnapshot } }
   | { type: 'goals/sync'; payload: Goal[] }
-  | { type: 'meta/sync'; payload: { version: string } };
+  | { type: 'meta/sync'; payload: { version: string } }
+  | { type: 'notification'; payload: { type: 'info' | 'success' | 'error'; message: string } };
 
 export type WebviewMessage =
   | { type: 'command'; payload: { command: TimerCommand } }
   | { type: 'settings/update'; payload: Partial<PomoCodeSettings> }
   | { type: 'goals/add'; payload: { text: string } }
   | { type: 'goals/toggle'; payload: { id: string } }
+  | { type: 'goals/complete'; payload: { id: string } }
+  | { type: 'goals/reopen'; payload: { id: string } }
   | { type: 'goals/remove'; payload: { id: string } }
+  | { type: 'timer/setActiveGoals'; payload: { goalIds: string[] } }
+  | { type: 'data/exportJson' }
+  | { type: 'data/copyJson' }
+  | { type: 'data/importJson' }
   | { type: 'openExternal'; payload: { url: string } }
   | { type: 'webview/ready' };
