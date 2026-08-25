@@ -62,7 +62,7 @@ export function activate(context: vscode.ExtensionContext): void {
     }),
   );
 
-  registerCommands(context, timerEngine);
+  registerCommands(context, timerEngine, historyStore);
 }
 
 export function deactivate(): void {

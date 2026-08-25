@@ -1,8 +1,10 @@
 import * as vscode from 'vscode';
 import type { TimerEngine } from '../timer/timerEngine';
+import type { HistoryStore } from '../storage/historyStore';
+import { computeStats } from '../../shared/statsUtils';
 
 interface QuickMenuItem extends vscode.QuickPickItem {
-  action: () => void;
+  action?: () => void;
 }
 
 function formatTime(totalSeconds: number): string {
@@ -11,9 +13,15 @@ function formatTime(totalSeconds: number): string {
   return `${minutes}:${String(seconds).padStart(2, '0')}`;
 }
 
-async function showQuickMenu(timerEngine: TimerEngine): Promise<void> {
+async function showQuickMenu(timerEngine: TimerEngine, historyStore: HistoryStore): Promise<void> {
   const snapshot = timerEngine.getSnapshot();
+  const stats = computeStats(historyStore.getAll());
   const items: QuickMenuItem[] = [];
+
+  items.push({
+    label: `$(flame) ${stats.todayCount} pomodoros today · ${stats.currentStreakDays} day streak`,
+    kind: vscode.QuickPickItemKind.Separator,
+  });
 
   if (snapshot.status === 'running') {
     items.push({ label: '$(debug-pause) Pause', action: () => timerEngine.pause() });
@@ -41,10 +49,14 @@ async function showQuickMenu(timerEngine: TimerEngine): Promise<void> {
     placeHolder: 'Choose a PomoCode action',
   });
 
-  picked?.action();
+  picked?.action?.();
 }
 
-export function registerCommands(context: vscode.ExtensionContext, timerEngine: TimerEngine): void {
+export function registerCommands(
+  context: vscode.ExtensionContext,
+  timerEngine: TimerEngine,
+  historyStore: HistoryStore,
+): void {
   context.subscriptions.push(
     vscode.commands.registerCommand('pomocode.start', () => timerEngine.start()),
     vscode.commands.registerCommand('pomocode.pause', () => timerEngine.pause()),
@@ -54,6 +66,6 @@ export function registerCommands(context: vscode.ExtensionContext, timerEngine: 
     vscode.commands.registerCommand('pomocode.openPanel', () => {
       void vscode.commands.executeCommand('pomocode.panelView.focus');
     }),
-    vscode.commands.registerCommand('pomocode.showQuickMenu', () => void showQuickMenu(timerEngine)),
+    vscode.commands.registerCommand('pomocode.showQuickMenu', () => void showQuickMenu(timerEngine, historyStore)),
   );
 }
