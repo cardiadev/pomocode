@@ -5,7 +5,8 @@ A dynamic, friendly Pomodoro timer for VS Code with live stats, streaks, and ses
 ## Features
 
 - **Minimal status bar timer** — always visible; click it to open a quick-actions menu (start, pause, resume, skip, reset, or open the panel).
-- **Activity Bar panel** — a dedicated PomoCode icon opens a full panel with the timer, session controls, goals, history, streaks, and stats.
+- **Activity Bar panel** — a dedicated PomoCode icon opens a full panel with the timer, round progress, session controls, goals, history, streaks, and stats.
+- **Full Pomodoro cycle** — follows the standard technique: 4 completed focus sessions (with short breaks in between) make up a round, then a long break, then the round starts over. A round dot indicator shows where you are in the current round. Skipping a session moves the timer forward without falsely counting toward the round — only a focus session that runs to completion counts.
 - **Goals** — jot down what you're working towards and check them off, independent of your Pomodoro sessions.
 - **Streak calendar & badges** — click the streak badge for a Duolingo-style monthly calendar of your active days, plus unlockable milestone badges to keep you motivated.
 - **Notifications** — VS Code notifications announce when a session starts and ends, with an optional native macOS notification so you still see it when VS Code is in the background.
@@ -43,9 +44,15 @@ All settings are available under **Settings → Extensions → PomoCode**, or di
 | `pomocode.autoStartNextSession` | `false` | Automatically start the next session when the current one ends. |
 | `pomocode.enableNotifications` | `true` | Show a VS Code notification on session start/end. |
 | `pomocode.enableNativeNotifications` | `true` | macOS only: also show a native system notification, so you see it even when VS Code is in the background. |
+| `pomocode.nativeNotificationSound` | `Glass` | macOS only: which system sound plays with the native notification (`None` disables it). |
 | `pomocode.enableSound` | `true` | Play a sound in the panel when a session ends. |
+| `pomocode.completionSound` | `chime` | Tone style played in the panel: Chime, Bell, Digital, or Soft. |
 
 Settings, session history, and goals respect VS Code's **Profiles** feature: each profile keeps its own independent PomoCode state.
+
+## A note on the native notification icon
+
+The native macOS notification (`pomocode.enableNativeNotifications`) is triggered via AppleScript's `display notification`. macOS always attributes these to a fixed system identity regardless of which process ran the script, so there's no way to make it show PomoCode's icon without bundling a separate signed helper binary — which we intentionally avoid, to keep the extension dependency-free and Gatekeeper-friendly. The title, message, and sound are still fully PomoCode's; only the icon is generic.
 
 ## A note on sound
 

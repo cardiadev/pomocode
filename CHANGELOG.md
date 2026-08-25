@@ -2,6 +2,23 @@
 
 All notable changes to PomoCode are documented in this file.
 
+## [0.3.0] - 2026-08-24
+
+### Added
+
+- Round progress indicator in the panel (dots + "Pomodoro X of N this round") so the full 4-pomodoro cycle structure is visible, not just the current session.
+- `pomocode.nativeNotificationSound` setting: choose which macOS system sound plays with the native notification (or `None`).
+- `pomocode.completionSound` setting: choose the panel's completion tone (Chime, Bell, Digital, or Soft), with instant preview when changing it.
+- Quick-actions menu now shows today's pomodoro count and current streak as a header line.
+
+### Fixed
+
+- Skipping a focus session no longer counts toward the round of `sessionsBeforeLongBreak`. Only a focus session that runs to completion advances the round — matching the standard Pomodoro Technique rule that a pomodoro only "counts" if it wasn't interrupted. Skipping still moves the timer forward; it just doesn't corrupt the round count or trigger a premature long break.
+
+### Note on native notification icon
+
+macOS attributes any notification triggered via AppleScript's `display notification` to a fixed system identity, regardless of which process ran the script — there's no way to make it show PomoCode's (or VS Code's) icon without bundling a separate signed helper binary. We're intentionally not doing that, to keep the extension dependency-free, so the native notification's icon will remain generic; the notification's title/body/sound are still fully PomoCode's.
+
 ## [0.2.0] - 2026-08-24
 
 ### Added
