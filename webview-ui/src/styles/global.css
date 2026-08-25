@@ -116,6 +116,38 @@ body {
   letter-spacing: 0.6px;
 }
 
+/* Round progress */
+
+.round-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: -8px;
+}
+
+.round-progress-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.round-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pomocode-border);
+}
+
+.round-dot--filled {
+  background: var(--pomocode-focus);
+}
+
+.round-progress-label {
+  font-size: 10px;
+  color: var(--pomocode-muted);
+  text-align: center;
+}
+
 /* Controls */
 
 .control-buttons {
@@ -297,7 +329,8 @@ body {
   color: var(--pomocode-muted);
 }
 
-.settings-field input {
+.settings-field input,
+.settings-field select {
   font-family: var(--pomocode-font);
   font-size: 12px;
   padding: 5px 8px;
@@ -305,6 +338,12 @@ body {
   border: 1px solid var(--pomocode-input-border);
   background: var(--pomocode-input-bg);
   color: var(--pomocode-input-fg);
+}
+
+.settings-field--indented {
+  margin: -4px 0 10px 4px;
+  padding-left: 10px;
+  border-left: 2px solid var(--pomocode-border);
 }
 
 .settings-toggles {

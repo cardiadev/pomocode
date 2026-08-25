@@ -5,6 +5,7 @@ import { appReducer, initialAppState } from './state/appReducer';
 import { unlockAudio, playCompletionBeep } from './audio';
 import { TimerDisplay } from './components/TimerDisplay';
 import { ControlButtons } from './components/ControlButtons';
+import { RoundProgress } from './components/RoundProgress';
 import { StreakBadge } from './components/StreakBadge';
 import { StreakCalendarModal } from './components/StreakCalendarModal';
 import { StatsSummary } from './components/StatsSummary';
@@ -38,9 +39,9 @@ export function App(): ReactElement {
 
   useEffect(() => {
     if (state.timer?.justCompleted && state.settings?.enableSound) {
-      playCompletionBeep();
+      playCompletionBeep(state.settings.completionSound);
     }
-  }, [state.timer, state.settings?.enableSound]);
+  }, [state.timer, state.settings?.enableSound, state.settings?.completionSound]);
 
   function handleCommand(command: TimerCommand): void {
     unlockAudio();
@@ -83,6 +84,11 @@ export function App(): ReactElement {
       </header>
 
       <TimerDisplay timer={state.timer} />
+      <RoundProgress
+        completedFocusSessionsInCycle={state.timer.completedFocusSessionsInCycle}
+        sessionsBeforeLongBreak={state.settings.sessionsBeforeLongBreak}
+        sessionType={state.timer.sessionType}
+      />
       <ControlButtons timer={state.timer} onCommand={handleCommand} />
 
       <GoalsList goals={state.goals} onAdd={handleAddGoal} onToggle={handleToggleGoal} onRemove={handleRemoveGoal} />
