@@ -137,7 +137,10 @@ export class TimerEngine {
     const durationMinutes = Math.round(elapsedSeconds / 60);
     const completedSessionType = this.sessionType;
 
-    if (completedSessionType === 'focus') {
+    // Only a focus session that ran to completion counts toward the round of
+    // sessionsBeforeLongBreak — skipping a session moves the timer forward
+    // without advancing (or corrupting) the round progress.
+    if (completedSessionType === 'focus' && naturallyCompleted) {
       this.completedFocusSessionsInCycle += 1;
     }
 
