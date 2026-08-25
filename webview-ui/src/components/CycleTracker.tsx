@@ -98,9 +98,7 @@ export function CycleTracker({
       {/* Daily Target Progress Bar */}
       <div className={`daily-goal-box${isGoalReached ? ' daily-goal-box--achieved' : ''}`}>
         <div className="daily-goal-header">
-          <span className="daily-goal-title">
-            {isGoalReached ? '🎉 Daily Target' : '🎯 Daily Target'}
-          </span>
+          <span className="daily-goal-title">Daily Target</span>
           <span className="daily-goal-metric">
             {todayCount} / {dailyTargetPomodoros} ({actualPercentage}%)
           </span>
@@ -117,8 +115,8 @@ export function CycleTracker({
       <div className="cycle-header">
         <div className="cycle-main-label">
           {sessionType === 'longBreak'
-            ? '🌴 Long Break · Cycle Complete!'
-            : `🍅 Pomodoro ${currentFocusIndex} of ${sessionsBeforeLongBreak} (Round ${roundsCompletedToday + 1})`}
+            ? 'Long Break · Cycle Complete!'
+            : `Pomodoro ${currentFocusIndex} of ${sessionsBeforeLongBreak} (Round ${roundsCompletedToday + 1})`}
         </div>
         <div className="cycle-step-counter">
           Step {cycleStep} of {totalCycleSteps} in cycle

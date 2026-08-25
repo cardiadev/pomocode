@@ -9,12 +9,12 @@ interface TabBarProps {
   historyCount?: number;
 }
 
-export function TabBar({ activeTab, onTabChange, goalCount, historyCount }: TabBarProps): ReactElement {
-  const tabs: { id: ActiveTab; label: string; icon: string; badge?: number }[] = [
-    { id: 'timer', label: 'Timer', icon: '⏱️', badge: goalCount && goalCount > 0 ? goalCount : undefined },
-    { id: 'calendar', label: 'Calendar', icon: '📅' },
-    { id: 'history', label: 'History', icon: '📜', badge: historyCount && historyCount > 0 ? historyCount : undefined },
-    { id: 'settings', label: 'Settings', icon: '⚙️' },
+export function TabBar({ activeTab, onTabChange }: TabBarProps): ReactElement {
+  const tabs: { id: ActiveTab; label: string }[] = [
+    { id: 'timer', label: 'Timer' },
+    { id: 'calendar', label: 'Calendar' },
+    { id: 'history', label: 'History' },
+    { id: 'settings', label: 'Settings' },
   ];
 
   return (
@@ -30,9 +30,6 @@ export function TabBar({ activeTab, onTabChange, goalCount, historyCount }: TabB
             aria-selected={isActive}
             role="tab"
           >
-            <span className="tab-icon" aria-hidden="true">
-              {tab.icon}
-            </span>
             <span className="tab-label">{tab.label}</span>
           </button>
         );

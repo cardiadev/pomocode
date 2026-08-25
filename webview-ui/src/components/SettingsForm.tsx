@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactElement } from 'react';
 import type { PomoCodeSettings } from '../../../shared/protocol';
 import { useDebouncedCallback } from '../hooks/useDebouncedCallback';
 import { playCompletionBeep } from '../audio';
+import { NumberField } from './NumberField';
 
 const NATIVE_NOTIFICATION_SOUNDS: PomoCodeSettings['nativeNotificationSound'][] = [
   'None',
@@ -56,11 +57,7 @@ export function SettingsForm({
 
   const debouncedUpdate = useDebouncedCallback((partial: Partial<PomoCodeSettings>) => onUpdate(partial), 400);
 
-  function handleNumberChange(key: keyof PomoCodeSettings, rawValue: string): void {
-    const value = Number(rawValue);
-    if (Number.isNaN(value)) {
-      return;
-    }
+  function handleNumberChange(key: keyof PomoCodeSettings, value: number): void {
     setLocal((previous) => ({ ...previous, [key]: value }));
     debouncedUpdate({ [key]: value });
   }
@@ -82,21 +79,18 @@ export function SettingsForm({
     }
   }
 
-  const clearScopeLabels: Record<'today' | 'week' | 'all', { title: string; desc: string; btn: string }> = {
+  const clearScopeLabels: Record<'today' | 'week' | 'all', { title: string; desc: string }> = {
     today: {
       title: "Clear Today's History",
       desc: 'Are you sure you want to delete all session history recorded today? This cannot be undone.',
-      btn: "Delete Today's Data",
     },
     week: {
       title: "Clear This Week's History",
       desc: 'Are you sure you want to delete all session history from this current week? This cannot be undone.',
-      btn: "Delete Week's Data",
     },
     all: {
       title: 'Clear All Session History',
       desc: 'Are you sure you want to permanently erase ALL session history? This action is permanent and cannot be undone.',
-      btn: 'Delete All History',
     },
   };
 
@@ -105,60 +99,48 @@ export function SettingsForm({
       <h2 className="section-title">Timer &amp; Targets</h2>
 
       <div className="settings-grid">
-        <label className="settings-field">
-          <span>Focus duration (min)</span>
-          <input
-            type="number"
-            min={1}
-            max={180}
-            value={local.focusDuration}
-            onChange={(event) => handleNumberChange('focusDuration', event.target.value)}
-          />
-        </label>
+        <NumberField
+          label="Focus duration"
+          unit="min"
+          min={1}
+          max={180}
+          value={local.focusDuration}
+          onChange={(val) => handleNumberChange('focusDuration', val)}
+        />
 
-        <label className="settings-field">
-          <span>Short break (min)</span>
-          <input
-            type="number"
-            min={1}
-            max={60}
-            value={local.shortBreakDuration}
-            onChange={(event) => handleNumberChange('shortBreakDuration', event.target.value)}
-          />
-        </label>
+        <NumberField
+          label="Short break"
+          unit="min"
+          min={1}
+          max={60}
+          value={local.shortBreakDuration}
+          onChange={(val) => handleNumberChange('shortBreakDuration', val)}
+        />
 
-        <label className="settings-field">
-          <span>Long break (min)</span>
-          <input
-            type="number"
-            min={1}
-            max={120}
-            value={local.longBreakDuration}
-            onChange={(event) => handleNumberChange('longBreakDuration', event.target.value)}
-          />
-        </label>
+        <NumberField
+          label="Long break"
+          unit="min"
+          min={1}
+          max={120}
+          value={local.longBreakDuration}
+          onChange={(val) => handleNumberChange('longBreakDuration', val)}
+        />
 
-        <label className="settings-field">
-          <span>Pomodoros per round</span>
-          <input
-            type="number"
-            min={1}
-            max={12}
-            value={local.sessionsBeforeLongBreak}
-            onChange={(event) => handleNumberChange('sessionsBeforeLongBreak', event.target.value)}
-          />
-        </label>
+        <NumberField
+          label="Pomodoros per round"
+          min={1}
+          max={12}
+          value={local.sessionsBeforeLongBreak}
+          onChange={(val) => handleNumberChange('sessionsBeforeLongBreak', val)}
+        />
 
-        <label className="settings-field">
-          <span>Daily pomodoro target</span>
-          <input
-            type="number"
-            min={1}
-            max={50}
-            value={local.dailyTargetPomodoros}
-            onChange={(event) => handleNumberChange('dailyTargetPomodoros', event.target.value)}
-          />
-        </label>
+        <NumberField
+          label="Daily pomodoro target"
+          min={1}
+          max={50}
+          value={local.dailyTargetPomodoros}
+          onChange={(val) => handleNumberChange('dailyTargetPomodoros', val)}
+        />
       </div>
 
       <h2 className="section-title" style={{ marginTop: '20px' }}>
@@ -218,7 +200,7 @@ export function SettingsForm({
                   title="Test notification sound"
                   onClick={() => onPreviewNativeSound(local.nativeNotificationSound)}
                 >
-                  🔊 Test
+                  Test
                 </button>
               )}
             </div>
@@ -258,7 +240,7 @@ export function SettingsForm({
                 title="Test panel sound"
                 onClick={() => playCompletionBeep(local.completionSound)}
               >
-                🔊 Test
+                Test
               </button>
             </div>
           </div>
@@ -276,13 +258,13 @@ export function SettingsForm({
 
         <div className="data-actions-grid">
           <button type="button" className="btn btn--primary" onClick={onExportJson}>
-            💾 Export JSON File
+            Export JSON File
           </button>
           <button type="button" className="btn btn--secondary" onClick={onCopyJson}>
-            📋 Copy JSON to Clipboard
+            Copy JSON to Clipboard
           </button>
           <button type="button" className="btn btn--secondary" onClick={onImportJson}>
-            📥 Import Backup JSON
+            Import Backup JSON
           </button>
         </div>
       </div>
@@ -302,21 +284,21 @@ export function SettingsForm({
             className="btn btn--secondary"
             onClick={() => setClearScopeToConfirm('today')}
           >
-            🗑️ Clear Today's History
+            Clear Today's History
           </button>
           <button
             type="button"
             className="btn btn--secondary"
             onClick={() => setClearScopeToConfirm('week')}
           >
-            🗑️ Clear This Week's History
+            Clear This Week's History
           </button>
           <button
             type="button"
             className="btn btn--danger"
             onClick={() => setClearScopeToConfirm('all')}
           >
-            ⚠️ Clear All History
+            Clear All History
           </button>
         </div>
       </div>
@@ -343,7 +325,7 @@ export function SettingsForm({
                 className="btn btn--danger"
                 onClick={handleConfirmClear}
               >
-                {clearScopeLabels[clearScopeToConfirm].btn}
+                Delete
               </button>
             </div>
           </div>

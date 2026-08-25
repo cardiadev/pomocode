@@ -2,6 +2,18 @@
 
 All notable changes to PomoCode are documented in this file.
 
+## [0.5.3] - 2026-08-25
+
+### Added
+
+- **ReUI NumberField Inputs**: Replaced all raw numeric inputs in Settings with modern stepper components featuring increment/decrement buttons and direct keyboard input.
+
+### Changed
+
+- **Distributed Control Buttons**: Start, Skip, and Reset buttons now span the full container width equally in a single clean row.
+- **Clean Text UI**: Removed emojis from the Tab bar, Sound Test buttons, Data Management actions, Clear History actions, and Daily Target headers.
+- **Streamlined Confirmation Modals**: Simplified modal action buttons to concise `Cancel` and `Delete` / `Reset` labels, ensuring consistent confirmation protection for timer resets.
+
 ## [0.5.2] - 2026-08-25
 
 ### Added

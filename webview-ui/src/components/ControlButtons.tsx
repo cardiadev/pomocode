@@ -17,11 +17,6 @@ export function ControlButtons({ timer, onCommand }: ControlButtonsProps): React
         : { label: 'Start', command: 'start' };
 
   function handleResetClick(): void {
-    // If the timer hasn't started or is at full initial time, reset directly
-    if (timer.status === 'idle' && timer.remainingSeconds === timer.totalSeconds) {
-      onCommand('reset');
-      return;
-    }
     setShowResetConfirm(true);
   }
 
@@ -61,7 +56,7 @@ export function ControlButtons({ timer, onCommand }: ControlButtonsProps): React
                 Cancel
               </button>
               <button type="button" className="btn btn--danger" onClick={handleConfirmReset}>
-                Yes, Reset
+                Reset
               </button>
             </div>
           </div>

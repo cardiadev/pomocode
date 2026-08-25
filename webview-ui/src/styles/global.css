@@ -330,8 +330,18 @@ body {
 
 .control-buttons {
   display: flex;
+  width: 100%;
   gap: 8px;
-  justify-content: center;
+  justify-content: stretch;
+}
+
+.control-buttons .btn {
+  flex: 1 1 0;
+  min-width: 0;
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .btn {
@@ -1339,6 +1349,99 @@ body {
   border: 1px solid var(--pomocode-input-border);
   background: var(--pomocode-input-bg);
   color: var(--pomocode-input-fg);
+}
+
+/* ReUI Style Number Field */
+
+.number-field-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.number-field-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--pomocode-muted);
+}
+
+.number-field-control {
+  display: flex;
+  align-items: center;
+  background: var(--pomocode-input-bg);
+  border: 1px solid var(--pomocode-input-border);
+  border-radius: 8px;
+  overflow: hidden;
+  height: 32px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.number-field-control:focus-within {
+  border-color: var(--pomocode-accent);
+  box-shadow: 0 0 0 1px var(--pomocode-accent);
+}
+
+.number-field-btn {
+  background: transparent;
+  border: none;
+  color: var(--pomocode-fg);
+  width: 28px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.number-field-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--pomocode-accent);
+}
+
+.number-field-btn:active:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(0.92);
+}
+
+.number-field-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.number-field-input-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+}
+
+.number-field-input {
+  width: 100%;
+  height: 100%;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  text-align: center;
+  font-family: var(--pomocode-font);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--pomocode-fg);
+  padding: 0 2px;
+}
+
+.number-field-unit {
+  position: absolute;
+  right: 6px;
+  font-size: 10px;
+  color: var(--pomocode-muted);
+  pointer-events: none;
 }
 
 .settings-field--indented {
