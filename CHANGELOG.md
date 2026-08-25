@@ -2,6 +2,22 @@
 
 All notable changes to PomoCode are documented in this file.
 
+## [0.4.0] - 2026-08-25
+
+### Added
+
+- Full-round tracking: `roundsCompletedToday` and `roundsCompletedAllTime` stats, derived from completed long-break entries (a round only counts once its long break has actually run, matching the standard Pomodoro Technique definition of "1 ciclo completo"). Shown in the Stats section, the round-progress area, and the status bar quick menu.
+- The extension version now shows below the "Developed by Cardiadev" footer link in the panel.
+- Status bar text and the quick menu now show the current round position (e.g. "(2/4)"), not just inside the panel.
+
+### Changed
+
+- Moved developer/build setup instructions out of README.md (which VS Code renders as the extension's "Details" page) into a separate `CONTRIBUTING.md`, so the Details page only shows end-user-relevant content.
+
+### Investigated
+
+- Confirmed (with the user) that native macOS notifications not appearing, and the native sound not playing, is not a PomoCode bug: even a bare `osascript -e 'display notification ...'` run directly from the terminal produced no banner or sound on the affected machine. This points to macOS Focus/Do Not Disturb or Notification permissions for the calling process, not the extension's AppleScript invocation.
+
 ## [0.3.0] - 2026-08-24
 
 ### Added
