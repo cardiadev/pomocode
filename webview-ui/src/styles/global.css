@@ -1387,6 +1387,143 @@ body {
   gap: 6px;
 }
 
+.sound-select-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.sound-select-row select {
+  flex: 1;
+}
+
+.btn--sm {
+  padding: 4px 8px;
+  font-size: 11px;
+  height: 28px;
+}
+
+.btn--danger {
+  background: #dc2626;
+  color: #ffffff;
+  border: 1px solid rgba(220, 38, 38, 0.4);
+}
+
+.btn--danger:hover {
+  background: #b91c1c;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--pomocode-muted);
+  border: 1px solid var(--pomocode-border);
+}
+
+.btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--pomocode-fg);
+}
+
+.section-title--danger {
+  color: #ef4444;
+}
+
+.data-management-card--danger {
+  border-color: rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.03);
+}
+
+/* Modal Overlay & Dialog */
+
+.control-container {
+  position: relative;
+  width: 100%;
+}
+
+.confirm-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 9999;
+  animation: modalFadeIn 0.15s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.confirm-modal {
+  background: var(--pomocode-card-bg);
+  border: 1px solid var(--pomocode-border);
+  border-radius: 12px;
+  padding: 16px;
+  max-width: 280px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: modalScaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.confirm-modal-icon {
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+
+.confirm-modal-content h4 {
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--pomocode-fg);
+}
+
+.confirm-modal-content p {
+  margin: 0;
+  font-size: 11px;
+  color: var(--pomocode-muted);
+  line-height: 1.4;
+}
+
+.confirm-modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  width: 100%;
+}
+
+.confirm-modal-actions .btn {
+  flex: 1;
+  font-size: 11px;
+  padding: 6px 8px;
+}
+
 /* Footer */
 
 .app-footer {

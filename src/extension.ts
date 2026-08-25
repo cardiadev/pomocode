@@ -27,6 +27,7 @@ export function activate(context: vscode.ExtensionContext): void {
     historyStore,
     goalsStore,
     dataService,
+    notificationService,
     extensionVersion,
   );
 

@@ -5,6 +5,7 @@ import type { SettingsService } from '../storage/settingsService';
 import type { HistoryStore } from '../storage/historyStore';
 import type { GoalsStore } from '../storage/goalsStore';
 import type { DataService } from '../storage/dataService';
+import type { NotificationService } from '../notifications/notificationService';
 import { computeStats } from '../../shared/statsUtils';
 import { buildPanelHtml } from './html';
 
@@ -18,6 +19,7 @@ export class PanelProvider implements vscode.WebviewViewProvider {
     private readonly historyStore: HistoryStore,
     private readonly goalsStore: GoalsStore,
     private readonly dataService: DataService,
+    private readonly notificationService: NotificationService,
     private readonly extensionVersion: string,
   ) {}
 
@@ -53,6 +55,9 @@ export class PanelProvider implements vscode.WebviewViewProvider {
       case 'settings/update':
         this.handleSettingsUpdate(message.payload);
         return;
+      case 'settings/previewNativeSound':
+        this.notificationService.playNativeSound(message.payload.sound);
+        return;
       case 'goals/add':
         void this.goalsStore.add(message.payload.text);
         return;
@@ -79,6 +84,9 @@ export class PanelProvider implements vscode.WebviewViewProvider {
         return;
       case 'data/importJson':
         void this.dataService.importFromFile();
+        return;
+      case 'data/clear':
+        void this.dataService.clearData(message.payload.scope);
         return;
       case 'openExternal':
         void vscode.env.openExternal(vscode.Uri.parse(message.payload.url));

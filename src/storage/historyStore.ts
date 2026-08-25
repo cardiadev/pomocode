@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import type { HistoryEntry } from '../../shared/protocol';
+import { toLocalDayKey } from '../../shared/statsUtils';
 
 const HISTORY_KEY = 'pomocode.history.entries';
 const MAX_ENTRIES = 1000;
@@ -28,6 +29,29 @@ export class HistoryStore {
     const entries = newEntries.slice(-MAX_ENTRIES);
     await this.globalState.update(HISTORY_KEY, entries);
     this.onDidChangeEmitter.fire(entries);
+  }
+
+  async clearToday(): Promise<number> {
+    const todayKey = toLocalDayKey(new Date().toISOString());
+    const all = this.getAll();
+    const remaining = all.filter((e) => toLocalDayKey(e.endedAt) !== todayKey);
+    const removedCount = all.length - remaining.length;
+    await this.replaceHistory(remaining);
+    return removedCount;
+  }
+
+  async clearThisWeek(): Promise<number> {
+    const now = new Date();
+    const dayIndex = now.getDay();
+    const weekStart = new Date(now);
+    weekStart.setHours(0, 0, 0, 0);
+    weekStart.setDate(weekStart.getDate() - dayIndex);
+
+    const all = this.getAll();
+    const remaining = all.filter((e) => new Date(e.endedAt) < weekStart);
+    const removedCount = all.length - remaining.length;
+    await this.replaceHistory(remaining);
+    return removedCount;
   }
 
   async clear(): Promise<void> {

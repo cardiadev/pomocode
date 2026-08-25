@@ -108,8 +108,10 @@ export type WebviewMessage =
   | { type: 'goals/reopen'; payload: { id: string } }
   | { type: 'goals/remove'; payload: { id: string } }
   | { type: 'timer/setActiveGoals'; payload: { goalIds: string[] } }
+  | { type: 'settings/previewNativeSound'; payload: { sound: NativeNotificationSound } }
   | { type: 'data/exportJson' }
   | { type: 'data/copyJson' }
   | { type: 'data/importJson' }
+  | { type: 'data/clear'; payload: { scope: 'today' | 'week' | 'all' } }
   | { type: 'openExternal'; payload: { url: string } }
   | { type: 'webview/ready' };

@@ -47,4 +47,14 @@ export class NotificationService {
       showNativeNotification('PomoCode', message, settings.nativeNotificationSound);
     }
   }
+
+  playNativeSound(soundName: PomoCodeSettings['nativeNotificationSound']): void {
+    if (process.platform !== 'darwin' || soundName === 'None') {
+      return;
+    }
+    const soundPath = `/System/Library/Sounds/${soundName}.aiff`;
+    execFile('afplay', [soundPath], () => {
+      // Best-effort preview
+    });
+  }
 }

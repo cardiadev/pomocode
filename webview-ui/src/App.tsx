@@ -89,6 +89,14 @@ export function App(): ReactElement {
     vscodeApi.postMessage({ type: 'data/importJson' });
   }
 
+  function handlePreviewNativeSound(sound: PomoCodeSettings['nativeNotificationSound']): void {
+    vscodeApi.postMessage({ type: 'settings/previewNativeSound', payload: { sound } });
+  }
+
+  function handleClearData(scope: 'today' | 'week' | 'all'): void {
+    vscodeApi.postMessage({ type: 'data/clear', payload: { scope } });
+  }
+
   function handleOpenExternal(url: string): void {
     vscodeApi.postMessage({ type: 'openExternal', payload: { url } });
   }
@@ -183,9 +191,11 @@ export function App(): ReactElement {
           <SettingsForm
             settings={state.settings}
             onUpdate={handleSettingsUpdate}
+            onPreviewNativeSound={handlePreviewNativeSound}
             onExportJson={handleExportJson}
             onCopyJson={handleCopyJson}
             onImportJson={handleImportJson}
+            onClearData={handleClearData}
           />
         </main>
       )}

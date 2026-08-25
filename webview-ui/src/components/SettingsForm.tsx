@@ -31,19 +31,24 @@ const COMPLETION_SOUNDS: { value: PomoCodeSettings['completionSound']; label: st
 interface SettingsFormProps {
   settings: PomoCodeSettings;
   onUpdate: (partial: Partial<PomoCodeSettings>) => void;
+  onPreviewNativeSound: (sound: PomoCodeSettings['nativeNotificationSound']) => void;
   onExportJson: () => void;
   onCopyJson: () => void;
   onImportJson: () => void;
+  onClearData: (scope: 'today' | 'week' | 'all') => void;
 }
 
 export function SettingsForm({
   settings,
   onUpdate,
+  onPreviewNativeSound,
   onExportJson,
   onCopyJson,
   onImportJson,
+  onClearData,
 }: SettingsFormProps): ReactElement {
   const [local, setLocal] = useState(settings);
+  const [clearScopeToConfirm, setClearScopeToConfirm] = useState<'today' | 'week' | 'all' | null>(null);
 
   useEffect(() => {
     setLocal(settings);
@@ -69,6 +74,31 @@ export function SettingsForm({
     setLocal((previous) => ({ ...previous, [key]: value }));
     onUpdate({ [key]: value });
   }
+
+  function handleConfirmClear(): void {
+    if (clearScopeToConfirm) {
+      onClearData(clearScopeToConfirm);
+      setClearScopeToConfirm(null);
+    }
+  }
+
+  const clearScopeLabels: Record<'today' | 'week' | 'all', { title: string; desc: string; btn: string }> = {
+    today: {
+      title: "Clear Today's History",
+      desc: 'Are you sure you want to delete all session history recorded today? This cannot be undone.',
+      btn: "Delete Today's Data",
+    },
+    week: {
+      title: "Clear This Week's History",
+      desc: 'Are you sure you want to delete all session history from this current week? This cannot be undone.',
+      btn: "Delete Week's Data",
+    },
+    all: {
+      title: 'Clear All Session History',
+      desc: 'Are you sure you want to permanently erase ALL session history? This action is permanent and cannot be undone.',
+      btn: 'Delete All History',
+    },
+  };
 
   return (
     <div className="settings-form">
@@ -164,24 +194,35 @@ export function SettingsForm({
         </label>
 
         {local.enableNativeNotifications && (
-          <label className="settings-field settings-field--indented">
+          <div className="settings-field settings-field--indented">
             <span>Native notification sound</span>
-            <select
-              value={local.nativeNotificationSound}
-              onChange={(event) =>
-                handleSelectChange(
-                  'nativeNotificationSound',
-                  event.target.value as PomoCodeSettings['nativeNotificationSound'],
-                )
-              }
-            >
-              {NATIVE_NOTIFICATION_SOUNDS.map((sound) => (
-                <option key={sound} value={sound}>
-                  {sound}
-                </option>
-              ))}
-            </select>
-          </label>
+            <div className="sound-select-row">
+              <select
+                value={local.nativeNotificationSound}
+                onChange={(event) => {
+                  const sound = event.target.value as PomoCodeSettings['nativeNotificationSound'];
+                  handleSelectChange('nativeNotificationSound', sound);
+                  onPreviewNativeSound(sound);
+                }}
+              >
+                {NATIVE_NOTIFICATION_SOUNDS.map((sound) => (
+                  <option key={sound} value={sound}>
+                    {sound}
+                  </option>
+                ))}
+              </select>
+              {local.nativeNotificationSound !== 'None' && (
+                <button
+                  type="button"
+                  className="btn btn--secondary btn--sm"
+                  title="Test notification sound"
+                  onClick={() => onPreviewNativeSound(local.nativeNotificationSound)}
+                >
+                  🔊 Test
+                </button>
+              )}
+            </div>
+          </div>
         )}
 
         <label className="settings-toggle">
@@ -194,28 +235,38 @@ export function SettingsForm({
         </label>
 
         {local.enableSound && (
-          <label className="settings-field settings-field--indented">
+          <div className="settings-field settings-field--indented">
             <span>Panel completion sound</span>
-            <select
-              value={local.completionSound}
-              onChange={(event) => {
-                const value = event.target.value as PomoCodeSettings['completionSound'];
-                handleSelectChange('completionSound', value);
-                playCompletionBeep(value);
-              }}
-            >
-              {COMPLETION_SOUNDS.map((sound) => (
-                <option key={sound.value} value={sound.value}>
-                  {sound.label}
-                </option>
-              ))}
-            </select>
-          </label>
+            <div className="sound-select-row">
+              <select
+                value={local.completionSound}
+                onChange={(event) => {
+                  const value = event.target.value as PomoCodeSettings['completionSound'];
+                  handleSelectChange('completionSound', value);
+                  playCompletionBeep(value);
+                }}
+              >
+                {COMPLETION_SOUNDS.map((sound) => (
+                  <option key={sound.value} value={sound.value}>
+                    {sound.label}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                className="btn btn--secondary btn--sm"
+                title="Test panel sound"
+                onClick={() => playCompletionBeep(local.completionSound)}
+              >
+                🔊 Test
+              </button>
+            </div>
+          </div>
         )}
       </div>
 
       <h2 className="section-title" style={{ marginTop: '20px' }}>
-        Data Management (JSON Export &amp; Backup)
+        Data Management &amp; Backup
       </h2>
 
       <div className="data-management-card">
@@ -235,6 +286,69 @@ export function SettingsForm({
           </button>
         </div>
       </div>
+
+      <h2 className="section-title section-title--danger" style={{ marginTop: '20px' }}>
+        Clear History &amp; Data
+      </h2>
+
+      <div className="data-management-card data-management-card--danger">
+        <p className="data-management-desc">
+          Remove historical records to reset your daily, weekly, or overall stats. Confirmation is required.
+        </p>
+
+        <div className="data-actions-grid">
+          <button
+            type="button"
+            className="btn btn--secondary"
+            onClick={() => setClearScopeToConfirm('today')}
+          >
+            🗑️ Clear Today's History
+          </button>
+          <button
+            type="button"
+            className="btn btn--secondary"
+            onClick={() => setClearScopeToConfirm('week')}
+          >
+            🗑️ Clear This Week's History
+          </button>
+          <button
+            type="button"
+            className="btn btn--danger"
+            onClick={() => setClearScopeToConfirm('all')}
+          >
+            ⚠️ Clear All History
+          </button>
+        </div>
+      </div>
+
+      {/* Confirmation Modal */}
+      {clearScopeToConfirm && (
+        <div className="confirm-modal-overlay" role="dialog" aria-modal="true">
+          <div className="confirm-modal">
+            <div className="confirm-modal-icon">⚠️</div>
+            <div className="confirm-modal-content">
+              <h4>{clearScopeLabels[clearScopeToConfirm].title}</h4>
+              <p>{clearScopeLabels[clearScopeToConfirm].desc}</p>
+            </div>
+            <div className="confirm-modal-actions">
+              <button
+                type="button"
+                className="btn btn--ghost"
+                onClick={() => setClearScopeToConfirm(null)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn--danger"
+                onClick={handleConfirmClear}
+              >
+                {clearScopeLabels[clearScopeToConfirm].btn}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

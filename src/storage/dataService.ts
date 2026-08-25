@@ -137,4 +137,47 @@ export class DataService {
       return { success: false, message };
     }
   }
+
+  async clearData(scope: 'today' | 'week' | 'all'): Promise<{ success: boolean; message: string }> {
+    let warningText = '';
+    let confirmLabel = '';
+
+    if (scope === 'today') {
+      warningText = "Are you sure you want to delete today's session history? This cannot be undone.";
+      confirmLabel = "Delete Today's History";
+    } else if (scope === 'week') {
+      warningText = "Are you sure you want to delete this week's session history? This cannot be undone.";
+      confirmLabel = "Delete This Week's History";
+    } else {
+      warningText = "Are you sure you want to delete ALL session history? This action is permanent and cannot be undone.";
+      confirmLabel = "Delete All History";
+    }
+
+    const confirm = await vscode.window.showWarningMessage(
+      warningText,
+      { modal: true },
+      confirmLabel,
+    );
+
+    if (confirm !== confirmLabel) {
+      return { success: false, message: 'Deletion cancelled by user.' };
+    }
+
+    if (scope === 'today') {
+      const removed = await this.historyStore.clearToday();
+      const message = `Deleted ${removed} history entries from today.`;
+      void vscode.window.showInformationMessage(`PomoCode: ${message}`);
+      return { success: true, message };
+    } else if (scope === 'week') {
+      const removed = await this.historyStore.clearThisWeek();
+      const message = `Deleted ${removed} history entries from this week.`;
+      void vscode.window.showInformationMessage(`PomoCode: ${message}`);
+      return { success: true, message };
+    } else {
+      await this.historyStore.clear();
+      const message = 'All session history has been cleared.';
+      void vscode.window.showInformationMessage(`PomoCode: ${message}`);
+      return { success: true, message };
+    }
+  }
 }

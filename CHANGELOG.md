@@ -2,6 +2,14 @@
 
 All notable changes to PomoCode are documented in this file.
 
+## [0.5.2] - 2026-08-25
+
+### Added
+
+- **Reset Confirmation Prompt**: Clicking Reset now displays a confirmation dialog to prevent accidental restarts of active pomodoro sessions.
+- **Native Notification Sound Previews**: Added instant sound previewing (`afplay`) directly from the Settings dropdown and dedicated test buttons so users can hear and choose their preferred macOS system alert sound.
+- **Granular History Clearing & Reset**: Added options in Settings to clear today's history, this week's history, or perform a full history wipe, protected by confirmation prompts to prevent accidental data loss.
+
 ## [0.5.1] - 2026-08-25
 
 ### Changed
