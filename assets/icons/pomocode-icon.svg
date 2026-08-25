@@ -1,25 +1,154 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
   <defs>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fb923c"/>
-      <stop offset="100%" stop-color="#ea580c"/>
+    <!-- App background gradient -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1e24"/>
+      <stop offset="100%" stop-color="#0f0f12"/>
     </linearGradient>
-    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#7c2d12" flood-opacity="0.35"/>
+
+    <!-- Tomato 3D gradient -->
+    <radialGradient id="tomatoGrad" cx="38%" cy="32%" r="65%">
+      <stop offset="0%" stop-color="#ff6b4a"/>
+      <stop offset="45%" stop-color="#f43f5e"/>
+      <stop offset="100%" stop-color="#be123c"/>
+    </radialGradient>
+
+    <!-- Leaf gradient -->
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="100%" stop-color="#15803d"/>
+    </linearGradient>
+
+    <!-- Clock face gradient -->
+    <linearGradient id="clockFaceGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#fff1f2"/>
+    </linearGradient>
+
+    <!-- Drop shadows -->
+    <filter id="shadowTomato" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+
+    <filter id="shadowDial" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#881337" flood-opacity="0.35"/>
     </filter>
   </defs>
-  <rect width="128" height="128" rx="30" fill="url(#bgGrad)"/>
-  
-  <g filter="url(#shadow)">
-    <!-- Leaves / Stem -->
-    <path d="M64 22c0-2.5-2-4.5-4.5-4.5S55 19.5 55 22c0 .9.3 1.8.8 2.5-3.2 1.6-5.4 4.7-5.8 8.4 2.3-.7 4.8-.7 7.1 0-1.1-2.3-1.4-4.9-.8-7.3 1.5 1.5 3.1 2.5 5.1 3.1 1.6-.5 3-1.3 4.1-2.4-.2 2.2-1.1 4.2-2.6 5.8 2.3-.7 4.8-.7 7.1 0-.4-3.7-2.6-6.8-5.8-8.4.5-.7.8-1.6.8-2.5 0-2.5-2-4.5-4.5-4.5h-.5z" fill="#22c55e"/>
-    
-    <!-- Clock Body -->
-    <circle cx="64" cy="74" r="36" fill="#ffffff"/>
-    <circle cx="64" cy="74" r="28" fill="#fff7ed"/>
-    
-    <!-- Clock Hands (Material Rounded) -->
-    <path d="M64 54c-1.66 0-3 1.34-3 3v17c0 .8.32 1.56.88 2.12l10 10c1.17 1.17 3.07 1.17 4.24 0 1.17-1.17 1.17-3.07 0-4.24L67 69.76V57c0-1.66-1.34-3-3-3z" fill="#ea580c"/>
-    <circle cx="64" cy="74" r="4.5" fill="#c2410c"/>
+
+  <!-- Squircle App Container -->
+  <rect width="256" height="256" rx="56" fill="url(#bgGradient)"/>
+  <rect width="254" height="254" x="1" y="1" rx="55" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5"/>
+
+  <!-- Main Tomato Group -->
+  <g filter="url(#shadowTomato)">
+    <!-- Tomato Body (organic plump rounded shape) -->
+    <path
+      d="M128 72 C78 72 40 102 40 152 C40 205 80 230 128 230 C176 230 216 205 216 152 C216 102 178 72 128 72 Z"
+      fill="url(#tomatoGrad)"
+    />
+
+    <!-- Subtle Tomato Highlight curve -->
+    <path
+      d="M66 112 C60 126 58 144 64 160"
+      stroke="#ffffff"
+      stroke-width="5"
+      stroke-linecap="round"
+      stroke-opacity="0.35"
+      fill="none"
+    />
+
+    <!-- Clock Outer Dial Frame / Ring -->
+    <circle cx="128" cy="154" r="54" fill="#ffffff" filter="url(#shadowDial)"/>
+    <circle cx="128" cy="154" r="48" fill="url(#clockFaceGrad)"/>
+
+    <!-- Clock Hour Markers (12, 3, 6, 9) -->
+    <circle cx="128" cy="113" r="2.8" fill="#e11d48"/>
+    <circle cx="169" cy="154" r="2.8" fill="#e11d48"/>
+    <circle cx="128" cy="195" r="2.8" fill="#e11d48"/>
+    <circle cx="87" cy="154" r="2.8" fill="#e11d48"/>
+
+    <!-- Subtle minor ticks -->
+    <circle cx="148.5" cy="118.5" r="1.5" fill="#f43f5e" opacity="0.6"/>
+    <circle cx="163.5" cy="133.5" r="1.5" fill="#f43f5e" opacity="0.6"/>
+    <circle cx="163.5" cy="174.5" r="1.5" fill="#f43f5e" opacity="0.6"/>
+    <circle cx="148.5" cy="189.5" r="1.5" fill="#f43f5e" opacity="0.6"/>
+    <circle cx="107.5" cy="189.5" r="1.5" fill="#f43f5e" opacity="0.6"/>
+    <circle cx="92.5" cy="174.5" r="1.5" fill="#f43f5e" opacity="0.6"/>
+    <circle cx="92.5" cy="133.5" r="1.5" fill="#f43f5e" opacity="0.6"/>
+    <circle cx="107.5" cy="118.5" r="1.5" fill="#f43f5e" opacity="0.6"/>
+
+    <!-- 25-Minute Focus Sector Arc Indicator (highlighting 0 to 25 mins) -->
+    <path
+      d="M128 154 L128 116 A38 38 0 0 1 161 173 Z"
+      fill="#f43f5e"
+      fill-opacity="0.16"
+    />
+
+    <!-- Clock Hands: Pointing to 12 (hour) and 5 / 25 min (minute) -->
+    <!-- Hour Hand (up to 12) -->
+    <line
+      x1="128"
+      y1="154"
+      x2="128"
+      y2="124"
+      stroke="#be123c"
+      stroke-width="5"
+      stroke-linecap="round"
+    />
+
+    <!-- Minute Hand (pointing at 25 min / ~150 deg) -->
+    <line
+      x1="128"
+      y1="154"
+      x2="152"
+      y2="175"
+      stroke="#e11d48"
+      stroke-width="4.5"
+      stroke-linecap="round"
+    />
+
+    <!-- Center Cap Pin -->
+    <circle cx="128" cy="154" r="5.5" fill="#be123c"/>
+    <circle cx="128" cy="154" r="2.5" fill="#ffffff"/>
+
+    <!-- Tomato Leaves & Stem on top -->
+    <!-- Curved Stem -->
+    <path
+      d="M128 72 C128 52 138 36 148 30"
+      stroke="url(#leafGrad)"
+      stroke-width="7"
+      stroke-linecap="round"
+      fill="none"
+    />
+
+    <!-- 5 Crown Leaves -->
+    <!-- Center Left Leaf -->
+    <path
+      d="M128 72 C116 66 92 68 84 80 C96 82 114 78 128 72 Z"
+      fill="url(#leafGrad)"
+    />
+    <!-- Far Left Leaf -->
+    <path
+      d="M128 72 C108 56 86 52 74 58 C84 68 106 72 128 72 Z"
+      fill="url(#leafGrad)"
+    />
+    <!-- Center Top Leaf -->
+    <path
+      d="M128 72 C122 52 120 38 126 34 C132 44 132 58 128 72 Z"
+      fill="url(#leafGrad)"
+    />
+    <!-- Far Right Leaf -->
+    <path
+      d="M128 72 C148 56 170 52 182 58 C172 68 150 72 128 72 Z"
+      fill="url(#leafGrad)"
+    />
+    <!-- Center Right Leaf -->
+    <path
+      d="M128 72 C140 66 164 68 172 80 C160 82 142 78 128 72 Z"
+      fill="url(#leafGrad)"
+    />
+
+    <!-- Leaf center star connection -->
+    <circle cx="128" cy="72" r="6" fill="#15803d"/>
   </g>
 </svg>

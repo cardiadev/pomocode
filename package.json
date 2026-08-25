@@ -2,7 +2,7 @@
   "name": "pomocode",
   "displayName": "PomoCode",
   "description": "A dynamic, aesthetic Pomodoro timer for VS Code with custom themes, Google Sans typography, live streaks, and session history.",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "publisher": "cardiadev",
   "license": "MIT",
   "private": true,

@@ -2,6 +2,12 @@
 
 All notable changes to PomoCode are documented in this file.
 
+## [0.6.1] - 2026-08-25
+
+### Changed
+
+- **Icon Redesign with Clock Dial**: Rebuilt the PomoCode icon (`.png` & `.svg`) and in-app brand logo into a recognizable tomato silhouette featuring a crisp white clock dial inside with 25-minute focus hands and organic green leaves.
+
 ## [0.6.0] - 2026-08-25
 
 ### Added

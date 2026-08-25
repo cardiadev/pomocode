@@ -15,23 +15,36 @@ export function TomatoIcon({ size = 18, className, ...props }: IconProps): React
       className={className}
       {...props}
     >
-      {/* Tomato body */}
-      <circle cx="12" cy="13" r="8.5" fill="currentColor" fillOpacity="0.95" />
-      {/* Tomato highlight */}
+      {/* Tomato red-orange body */}
+      <circle cx="12" cy="14" r="7.5" fill="#f43f5e" />
+      {/* Subtle tomato highlight */}
       <path
-        d="M8.5 8C6.5 9 5.5 11 5.5 13"
+        d="M7 12c-.5.8-.7 1.8-.4 2.6"
         stroke="#ffffff"
-        strokeWidth="1.2"
+        strokeWidth="1"
         strokeLinecap="round"
         strokeOpacity="0.4"
       />
-      {/* Tomato leaves / stem */}
+      {/* White clock face */}
+      <circle cx="12" cy="14" r="4.5" fill="#ffffff" />
+      {/* Clock hands pointing to 12 and 5 (25 min focus) */}
       <path
-        d="M12 4.5C12 4.5 11.5 6 12 7M12 7C10.2 6.2 8.5 6.8 8.5 6.8C9.8 7.6 11 8.2 12 8.2M12 7C13.8 6.2 15.5 6.8 15.5 6.8C14.2 7.6 13 8.2 12 8.2"
-        stroke="#22c55e"
-        strokeWidth="1.6"
+        d="M12 14v-2.8M12 14l1.9 1.9"
+        stroke="#e11d48"
+        strokeWidth="1.2"
         strokeLinecap="round"
-        strokeLinejoin="round"
+      />
+      <circle cx="12" cy="14" r="0.9" fill="#be123c" />
+      {/* Green stem & leaves */}
+      <path
+        d="M12 6.5c0-1.5 1-2.5 2-3"
+        stroke="#16a34a"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+      />
+      <path
+        d="M12 6.5c-1.8-.4-3.5 0-4.5.8 1.1.2 2.7 0 4.5-.8zm0 0c1.8-.4 3.5 0 4.5.8-1.1.2-2.7 0-4.5-.8z"
+        fill="#22c55e"
       />
     </svg>
   );

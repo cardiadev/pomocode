@@ -60,6 +60,12 @@ body {
   gap: 8px;
 }
 
+.app-logo-svg {
+  display: block;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(244, 63, 94, 0.4));
+}
+
 .app-logo {
   font-size: 18px;
   line-height: 1;
