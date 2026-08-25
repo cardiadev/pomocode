@@ -1,6 +1,6 @@
 import { useState, type ReactElement } from 'react';
 import type { TimerCommand, TimerSnapshot } from '../../../shared/protocol';
-import { WarningIcon } from './Icons';
+import { WarningIcon, PlayIcon, PauseIcon, SkipIcon, ResetIcon } from './Icons';
 
 interface ControlButtonsProps {
   timer: TimerSnapshot;
@@ -10,12 +10,12 @@ interface ControlButtonsProps {
 export function ControlButtons({ timer, onCommand }: ControlButtonsProps): ReactElement {
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 
-  const primaryAction: { label: string; command: TimerCommand } =
+  const primaryAction: { label: string; command: TimerCommand; icon: ReactElement } =
     timer.status === 'running'
-      ? { label: 'Pause', command: 'pause' }
+      ? { label: 'Pause', command: 'pause', icon: <PauseIcon size={14} /> }
       : timer.status === 'paused'
-        ? { label: 'Resume', command: 'resume' }
-        : { label: 'Start', command: 'start' };
+        ? { label: 'Resume', command: 'resume', icon: <PlayIcon size={14} /> }
+        : { label: 'Start', command: 'start', icon: <PlayIcon size={14} /> };
 
   function handleResetClick(): void {
     setShowResetConfirm(true);
@@ -33,14 +33,17 @@ export function ControlButtons({ timer, onCommand }: ControlButtonsProps): React
   return (
     <div className="control-container">
       <div className="control-buttons">
-        <button type="button" className="btn btn--primary" onClick={() => onCommand(primaryAction.command)}>
-          {primaryAction.label}
+        <button type="button" className="btn btn--primary btn--with-icon" onClick={() => onCommand(primaryAction.command)}>
+          {primaryAction.icon}
+          <span>{primaryAction.label}</span>
         </button>
-        <button type="button" className="btn btn--secondary" onClick={() => onCommand('skip')}>
-          Skip
+        <button type="button" className="btn btn--secondary btn--with-icon" onClick={() => onCommand('skip')}>
+          <SkipIcon size={14} />
+          <span>Skip</span>
         </button>
-        <button type="button" className="btn btn--secondary" onClick={handleResetClick}>
-          Reset
+        <button type="button" className="btn btn--secondary btn--with-icon" onClick={handleResetClick}>
+          <ResetIcon size={14} />
+          <span>Reset</span>
         </button>
       </div>
 

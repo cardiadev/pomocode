@@ -225,3 +225,67 @@ export function WarningIcon({ size = 24, className, ...props }: IconProps): Reac
     </svg>
   );
 }
+
+export function PlayIcon({ size = 16, className, ...props }: IconProps): ReactElement {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      {...props}
+    >
+      <path d="M8 6.82v10.36c0 .79.87 1.27 1.54.84l8.14-5.18c.62-.39.62-1.29 0-1.69L9.54 5.98C8.87 5.55 8 6.03 8 6.82z" />
+    </svg>
+  );
+}
+
+export function PauseIcon({ size = 16, className, ...props }: IconProps): ReactElement {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      {...props}
+    >
+      <path d="M8 19c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2s-2 .9-2 2v10c0 1.1.9 2 2 2zm6-12v10c0 1.1.9 2 2 2s2-.9 2-2V7c0-1.1-.9-2-2-2s-2 .9-2 2z" />
+    </svg>
+  );
+}
+
+export function SkipIcon({ size = 16, className, ...props }: IconProps): ReactElement {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      {...props}
+    >
+      <path d="M7.58 16.89l5.77-4.07c.56-.4.56-1.24 0-1.63L7.58 7.11C6.91 6.65 6 7.12 6 7.93v8.14c0 .81.91 1.28 1.58.82zM16 7c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1s1-.45 1-1V8c0-.55-.45-1-1-1z" />
+    </svg>
+  );
+}
+
+export function ResetIcon({ size = 16, className, ...props }: IconProps): ReactElement {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      {...props}
+    >
+      <path d="M12 5V2.21c0-.45-.54-.67-.85-.35l-3.8 3.79c-.2.2-.2.51 0 .71l3.79 3.79c.32.31.86.09.86-.36V6.5c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8-.22.41-.11.93.25 1.22.42.34 1.01.24 1.28-.21.62-1.07.97-2.31.97-3.63 0-4.42-3.58-8-8-8zm-6.2 4.67c-.42-.34-1.01-.24-1.28.21C3.9 10.95 3.55 12.19 3.55 13.5c0 4.42 3.58 8 8 8v2.79c0 .45.54.67.85.35l3.79-3.79c.2-.2.2-.51 0-.71l-3.79-3.79c-.31-.31-.85-.09-.85.36V20.5c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8.22-.41.11-.93-.25-1.23z" />
+    </svg>
+  );
+}

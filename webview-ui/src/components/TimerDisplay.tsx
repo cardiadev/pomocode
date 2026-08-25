@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import type { TimerSnapshot } from '../../../shared/protocol';
+import { TomatoIcon, PlayIcon, PauseIcon } from './Icons';
 
 const SESSION_LABELS: Record<TimerSnapshot['sessionType'], string> = {
   focus: 'Focus',
@@ -7,7 +8,7 @@ const SESSION_LABELS: Record<TimerSnapshot['sessionType'], string> = {
   longBreak: 'Long Break',
 };
 
-const RADIUS = 96;
+const RADIUS = 94;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
 function formatTime(totalSeconds: number): string {
@@ -27,14 +28,28 @@ export function TimerDisplay({ timer, todayCount }: TimerDisplayProps): ReactEle
 
   return (
     <div className="timer-display">
+      {/* Top-Left Corner: Status Pill Badge */}
+      <div className={`timer-corner-badge timer-status-badge timer-status-badge--${timer.status}`}>
+        {timer.status === 'running' && <PlayIcon size={11} className="timer-status-icon timer-status-icon--running" />}
+        {timer.status === 'paused' && <PauseIcon size={11} className="timer-status-icon timer-status-icon--paused" />}
+        {timer.status === 'idle' && <span className="timer-status-dot" />}
+        <span className="timer-status-text">
+          {timer.status === 'running' ? 'Running' : timer.status === 'paused' ? 'Paused' : 'Ready'}
+        </span>
+      </div>
+
+      {/* Top-Right Corner: Daily Pomodoros Pill Badge */}
       {todayCount !== undefined && (
         <div
-          className={`timer-today-badge${todayCount > 0 ? ' timer-today-badge--active' : ''}`}
+          className={`timer-corner-badge timer-today-pill${todayCount > 0 ? ' timer-today-pill--active' : ''}`}
           title={`${todayCount} pomodoro${todayCount === 1 ? '' : 's'} completed today`}
         >
-          <span className="timer-today-badge-count">{todayCount}</span>
+          <TomatoIcon size={13} className="timer-today-tomato-icon" />
+          <span className="timer-today-count">{todayCount}</span>
         </div>
       )}
+
+      {/* Main SVG Circular Ring */}
       <svg viewBox="0 0 220 220" className="timer-ring" role="img" aria-label={`${SESSION_LABELS[timer.sessionType]} timer`}>
         <circle className="timer-ring-track" cx="110" cy="110" r={RADIUS} />
         <circle
@@ -45,14 +60,13 @@ export function TimerDisplay({ timer, todayCount }: TimerDisplayProps): ReactEle
           strokeDasharray={CIRCUMFERENCE}
           strokeDashoffset={dashOffset}
         />
-        <text x="110" y="106" textAnchor="middle" className="timer-time">
+        <text x="110" y="114" textAnchor="middle" className="timer-time">
           {formatTime(timer.remainingSeconds)}
         </text>
-        <text x="110" y="138" textAnchor="middle" className="timer-session-label">
+        <text x="110" y="144" textAnchor="middle" className="timer-session-label">
           {SESSION_LABELS[timer.sessionType]}
         </text>
       </svg>
-      {timer.status === 'paused' && <div className="timer-paused-badge">Paused</div>}
     </div>
   );
 }

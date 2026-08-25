@@ -2,6 +2,16 @@
 
 All notable changes to PomoCode are documented in this file.
 
+## [0.7.1] - 2026-08-25
+
+### Changed
+
+- **Unified Streak Badge Color**: Fixed the daily streak number to match the vibrant orange of the flame icon and label.
+- **Sleek Daily Pomodoro Pill on Timer**: Redesigned the daily pomodoro badge at the top-right corner into an elegant translucent pill with tomato icon and orange count matching the streak badge style.
+- **Top-Left Status Corner Badge**: Moved session status (Running ▶️, Paused ⏸️, Ready ⏹️) to a fixed top-left corner pill with subtle animation, eliminating layout shifts and jumping buttons.
+- **Play/Pause/Skip/Reset Button Icons**: Added Material Symbols SVG icons to all primary action buttons for immediate visual clarity.
+- **Thicker Timer Ring & Optical Centering**: Increased timer ring stroke thickness to 13px and aligned center time and session typography for optimal vertical balance.
+
 ## [0.7.0] - 2026-08-25
 
 ### Added
