@@ -60,7 +60,7 @@ function computeStreakDays(completedFocusDayKeys: Set<string>): number {
 export function getCompletedFocusDayKeys(entries: HistoryEntry[]): Set<string> {
   const keys = new Set<string>();
   for (const entry of entries) {
-    if (entry.type === 'focus' && entry.completed) {
+    if (entry.type === 'focus') {
       keys.add(toLocalDayKey(entry.endedAt));
     }
   }
@@ -99,11 +99,9 @@ export function groupHistoryByDay(entries: HistoryEntry[]): DayHistoryGroup[] {
 
     for (const item of dayEntries) {
       if (item.type === 'focus') {
-        if (item.completed) {
-          completedFocusCount += 1;
-        }
+        completedFocusCount += 1;
         totalFocusMinutes += item.durationMinutes;
-      } else if (item.type === 'longBreak' && item.completed) {
+      } else if (item.type === 'longBreak') {
         roundsCompleted += 1;
       }
     }
@@ -126,9 +124,9 @@ export function computeStats(entries: HistoryEntry[], dailyTarget = 8): StatsSna
   const todayKey = toLocalDayKey(now.toISOString());
   const weekStart = startOfLocalWeek(now);
 
-  const completedFocusEntries = entries.filter((entry) => entry.type === 'focus' && entry.completed);
-  const completedRoundEntries = entries.filter((entry) => entry.type === 'longBreak' && entry.completed);
-  const roundsCompletedToday = completedRoundEntries.filter(
+  const focusEntries = entries.filter((entry) => entry.type === 'focus');
+  const roundEntries = entries.filter((entry) => entry.type === 'longBreak');
+  const roundsCompletedToday = roundEntries.filter(
     (entry) => toLocalDayKey(entry.endedAt) === todayKey,
   ).length;
 
@@ -137,12 +135,12 @@ export function computeStats(entries: HistoryEntry[], dailyTarget = 8): StatsSna
   let todayMinutes = 0;
   let weekMinutes = 0;
   let allTimeMinutes = 0;
-  const completedFocusDayKeys = new Set<string>();
+  const focusDayKeys = new Set<string>();
 
-  for (const entry of completedFocusEntries) {
+  for (const entry of focusEntries) {
     const entryDate = new Date(entry.endedAt);
     const entryDayKey = toLocalDayKey(entry.endedAt);
-    completedFocusDayKeys.add(entryDayKey);
+    focusDayKeys.add(entryDayKey);
 
     allTimeMinutes += entry.durationMinutes;
 
@@ -160,13 +158,13 @@ export function computeStats(entries: HistoryEntry[], dailyTarget = 8): StatsSna
   return {
     todayCount,
     weekCount,
-    allTimeCount: completedFocusEntries.length,
+    allTimeCount: focusEntries.length,
     todayMinutes,
     weekMinutes,
     allTimeMinutes,
-    currentStreakDays: computeStreakDays(completedFocusDayKeys),
+    currentStreakDays: computeStreakDays(focusDayKeys),
     roundsCompletedToday,
-    roundsCompletedAllTime: completedRoundEntries.length,
+    roundsCompletedAllTime: roundEntries.length,
     dailyTargetPomodoros: dailyTarget,
   };
 }

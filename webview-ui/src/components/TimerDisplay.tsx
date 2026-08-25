@@ -7,7 +7,7 @@ const SESSION_LABELS: Record<TimerSnapshot['sessionType'], string> = {
   longBreak: 'Long Break',
 };
 
-const RADIUS = 80;
+const RADIUS = 96;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
 function formatTime(totalSeconds: number): string {
@@ -26,20 +26,20 @@ export function TimerDisplay({ timer }: TimerDisplayProps): ReactElement {
 
   return (
     <div className="timer-display">
-      <svg viewBox="0 0 180 180" className="timer-ring" role="img" aria-label={`${SESSION_LABELS[timer.sessionType]} timer`}>
-        <circle className="timer-ring-track" cx="90" cy="90" r={RADIUS} />
+      <svg viewBox="0 0 220 220" className="timer-ring" role="img" aria-label={`${SESSION_LABELS[timer.sessionType]} timer`}>
+        <circle className="timer-ring-track" cx="110" cy="110" r={RADIUS} />
         <circle
           className={`timer-ring-progress timer-ring-progress--${timer.sessionType}`}
-          cx="90"
-          cy="90"
+          cx="110"
+          cy="110"
           r={RADIUS}
           strokeDasharray={CIRCUMFERENCE}
           strokeDashoffset={dashOffset}
         />
-        <text x="90" y="86" textAnchor="middle" className="timer-time">
+        <text x="110" y="106" textAnchor="middle" className="timer-time">
           {formatTime(timer.remainingSeconds)}
         </text>
-        <text x="90" y="112" textAnchor="middle" className="timer-session-label">
+        <text x="110" y="138" textAnchor="middle" className="timer-session-label">
           {SESSION_LABELS[timer.sessionType]}
         </text>
       </svg>

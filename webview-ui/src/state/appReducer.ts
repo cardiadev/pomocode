@@ -23,7 +23,13 @@ export function appReducer(state: AppState, message: HostMessage): AppState {
     case 'timer/update':
       return { ...state, timer: message.payload };
     case 'settings/sync':
-      return { ...state, settings: message.payload };
+      return {
+        ...state,
+        settings: message.payload,
+        stats: state.stats
+          ? { ...state.stats, dailyTargetPomodoros: message.payload.dailyTargetPomodoros }
+          : undefined,
+      };
     case 'history/sync':
       return { ...state, history: message.payload.entries, stats: message.payload.stats };
     case 'goals/sync':

@@ -2,6 +2,15 @@
 
 All notable changes to PomoCode are documented in this file.
 
+## [0.5.1] - 2026-08-25
+
+### Changed
+
+- **Larger Timer Display**: Expanded circular timer diameter to 220px with 36px font-size and glowing accents for enhanced readability and visual impact.
+- **Instant Settings & Daily Target Reactivity**: Changes to settings (such as daily target pomodoros) now immediately reflect in the dashboard and statistics in real-time.
+- **Daily Target & Pomodoro Progression**: Every processed focus session (whether naturally completed or stepped through via skip) increments the daily pomodoro count toward your daily target.
+- **Uncapped Daily Goals**: Reaching and exceeding 100% of your daily goal displays celebration states and actual percentages without restricting doing more pomodoros.
+
 ## [0.5.0] - 2026-08-25
 
 ### Added

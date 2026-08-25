@@ -84,7 +84,9 @@ export function CycleTracker({
     }
   }
 
-  const dailyPercentage = Math.min(100, Math.round((todayCount / Math.max(1, dailyTargetPomodoros)) * 100));
+  const actualPercentage = Math.round((todayCount / Math.max(1, dailyTargetPomodoros)) * 100);
+  const barPercentage = Math.min(100, actualPercentage);
+  const isGoalReached = todayCount >= dailyTargetPomodoros && dailyTargetPomodoros > 0;
 
   const currentFocusIndex =
     sessionType === 'longBreak'
@@ -94,15 +96,20 @@ export function CycleTracker({
   return (
     <div className="cycle-tracker">
       {/* Daily Target Progress Bar */}
-      <div className="daily-goal-box">
+      <div className={`daily-goal-box${isGoalReached ? ' daily-goal-box--achieved' : ''}`}>
         <div className="daily-goal-header">
-          <span className="daily-goal-title">🎯 Daily Target</span>
+          <span className="daily-goal-title">
+            {isGoalReached ? '🎉 Daily Target' : '🎯 Daily Target'}
+          </span>
           <span className="daily-goal-metric">
-            {todayCount} / {dailyTargetPomodoros} ({dailyPercentage}%)
+            {todayCount} / {dailyTargetPomodoros} ({actualPercentage}%)
           </span>
         </div>
         <div className="daily-goal-bar">
-          <div className="daily-goal-fill" style={{ width: `${dailyPercentage}%` }} />
+          <div
+            className={`daily-goal-fill${isGoalReached ? ' daily-goal-fill--achieved' : ''}`}
+            style={{ width: `${barPercentage}%` }}
+          />
         </div>
       </div>
 

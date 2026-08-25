@@ -51,6 +51,9 @@ export function App(): ReactElement {
   }
 
   function handleSettingsUpdate(partial: Partial<PomoCodeSettings>): void {
+    if (state.settings) {
+      dispatch({ type: 'settings/sync', payload: { ...state.settings, ...partial } });
+    }
     vscodeApi.postMessage({ type: 'settings/update', payload: partial });
   }
 
@@ -135,7 +138,7 @@ export function App(): ReactElement {
             cycleStep={state.timer.cycleStep}
             totalCycleSteps={state.timer.totalCycleSteps}
             todayCount={state.stats.todayCount}
-            dailyTargetPomodoros={state.stats.dailyTargetPomodoros}
+            dailyTargetPomodoros={state.settings.dailyTargetPomodoros}
             roundsCompletedToday={state.stats.roundsCompletedToday}
           />
 

@@ -63,7 +63,7 @@ export function activate(context: vscode.ExtensionContext): void {
         goalTitles: goalTitles && goalTitles.length > 0 ? goalTitles : undefined,
       });
 
-      if (event.completed && event.goalIds && event.goalIds.length > 0) {
+      if (event.sessionType === 'focus' && event.goalIds && event.goalIds.length > 0) {
         void goalsStore.incrementPomodoroCount(event.goalIds);
       }
 
@@ -71,6 +71,11 @@ export function activate(context: vscode.ExtensionContext): void {
     }),
     settingsService.onDidChange((settings) => {
       panelProvider.postMessage({ type: 'settings/sync', payload: settings });
+      const entries = historyStore.getAll();
+      panelProvider.postMessage({
+        type: 'history/sync',
+        payload: { entries, stats: computeStats(entries, settings.dailyTargetPomodoros) },
+      });
     }),
     historyStore.onDidChange((entries) => {
       const settings = settingsService.read();
