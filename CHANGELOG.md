@@ -2,6 +2,12 @@
 
 All notable changes to PomoCode are documented in this file.
 
+## [0.8.0] - 2026-08-25
+
+### Changed
+
+- **Pure VS Code Notification Architecture**: Removed all external AppleScript invocations (`osascript`) that triggered generic macOS Script Editor banners. Notifications now use standard VS Code `vscode.window.showInformationMessage` API and native `afplay` sounds, ensuring zero external dependencies, no permission prompts, and 100% marketplace compliance.
+
 ## [0.7.1] - 2026-08-25
 
 ### Changed

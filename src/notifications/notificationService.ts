@@ -8,19 +8,8 @@ const SESSION_LABELS: Record<SessionType, string> = {
   longBreak: 'Long break',
 };
 
-function escapeForAppleScript(value: string): string {
-  return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
-}
-
-function showNativeNotification(title: string, message: string, soundName: string): void {
-  if (process.platform !== 'darwin') {
-    return;
-  }
-  const soundClause = soundName === 'None' ? '' : ` sound name "${escapeForAppleScript(soundName)}"`;
-  const script = `display notification "${escapeForAppleScript(message)}" with title "${escapeForAppleScript(title)}"${soundClause}`;
-  execFile('osascript', ['-e', script], () => {
-    // Native notifications are a best-effort enhancement; ignore failures silently.
-  });
+function escapeAppleScript(str: string): string {
+  return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 }
 
 export class NotificationService {
@@ -33,7 +22,7 @@ export class NotificationService {
       void vscode.window.showInformationMessage(`PomoCode: ${message}`);
     }
     if (settings.enableNativeNotifications) {
-      showNativeNotification('PomoCode', message, settings.nativeNotificationSound);
+      this.sendNativeNotification('PomoCode', message, settings.nativeNotificationSound);
     }
   }
 
@@ -44,8 +33,33 @@ export class NotificationService {
       void vscode.window.showInformationMessage(`PomoCode: ${message}`);
     }
     if (settings.enableNativeNotifications) {
-      showNativeNotification('PomoCode', message, settings.nativeNotificationSound);
+      this.sendNativeNotification('PomoCode', message, settings.nativeNotificationSound);
     }
+  }
+
+  sendNativeNotification(title: string, message: string, soundName: PomoCodeSettings['nativeNotificationSound']): void {
+    if (process.platform !== 'darwin') {
+      return;
+    }
+
+    if (soundName && soundName !== 'None') {
+      this.playNativeSound(soundName);
+    }
+
+    const appName = vscode.env.appName || 'Visual Studio Code';
+    const safeTitle = escapeAppleScript(title);
+    const safeMessage = escapeAppleScript(message);
+    const safeAppName = escapeAppleScript(appName);
+
+    // Attempt to dispatch notification on behalf of the IDE application
+    const script = `tell application "${safeAppName}" to display notification "${safeMessage}" with title "${safeTitle}"`;
+    execFile('osascript', ['-e', script], (error) => {
+      if (error) {
+        // If tell application fails, fallback to direct display notification
+        const fallbackScript = `display notification "${safeMessage}" with title "${safeTitle}"`;
+        execFile('osascript', ['-e', fallbackScript], () => {});
+      }
+    });
   }
 
   playNativeSound(soundName: PomoCodeSettings['nativeNotificationSound']): void {

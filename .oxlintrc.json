@@ -5,6 +5,9 @@
     "suspicious": "warn",
     "perf": "warn"
   },
+  "rules": {
+    "unicorn/require-post-message-target-origin": "off"
+  },
   "env": {
     "builtin": true,
     "node": true,
