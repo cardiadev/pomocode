@@ -1,32 +1,28 @@
 {
   "name": "pomocode",
-  "displayName": "PomoCode",
-  "description": "A dynamic, aesthetic Pomodoro timer for VS Code with custom themes, Google Sans typography, live streaks, and session history.",
-  "version": "0.7.1",
-  "publisher": "cardiadev",
-  "license": "MIT",
-  "private": true,
+  "version": "0.7.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/cardiadev/pomocode.git"
   },
-  "engines": {
-    "vscode": "^1.134.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "keywords": [
-    "pomodoro",
-    "timer",
-    "productivity",
-    "focus",
-    "break"
-  ],
-  "icon": "assets/icons/pomocode-icon.png",
   "main": "./dist/extension.js",
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "@types/vscode": "^1.134.0",
+    "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.28.2",
+    "oxlint": "^1.80.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "typescript": "^7.0.2"
+  },
   "activationEvents": [
     "onStartupFinished"
+  ],
+  "categories": [
+    "Other"
   ],
   "contributes": {
     "commands": [
@@ -218,6 +214,22 @@
       ]
     }
   },
+  "description": "A dynamic, aesthetic Pomodoro timer for VS Code with custom themes, Google Sans typography, live streaks, and session history.",
+  "displayName": "PomoCode",
+  "engines": {
+    "vscode": "^1.134.0"
+  },
+  "icon": "assets/icons/pomocode-icon.png",
+  "keywords": [
+    "pomodoro",
+    "timer",
+    "productivity",
+    "focus",
+    "break"
+  ],
+  "license": "MIT",
+  "private": true,
+  "publisher": "cardiadev",
   "scripts": {
     "dev": "bun run scripts/watch.ts",
     "build": "bun run scripts/build.ts",
@@ -225,18 +237,6 @@
     "lint": "oxlint",
     "check": "bun run lint && bun run typecheck",
     "package": "bun run build && bunx @vscode/vsce package --no-yarn"
-  },
-  "devDependencies": {
-    "@types/node": "^26.2.0",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.5",
-    "@types/vscode": "^1.134.0",
-    "@vscode/vsce": "^3.9.2",
-    "esbuild": "^0.28.2",
-    "oxlint": "^1.80.0",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "typescript": "^7.0.2"
   },
   "trustedDependencies": [
     "@vscode/vsce-sign"

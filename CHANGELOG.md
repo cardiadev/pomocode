@@ -2,6 +2,12 @@
 
 All notable changes to PomoCode are documented in this file.
 
+## [0.7.2] - 2026-08-25
+
+### Changed
+
+- **Native macOS Notification Icon**: Targeted the active IDE host application (`tell application "Visual Studio Code" ...`) when dispatching AppleScript banners so notifications display the official VS Code icon instead of the generic macOS Script Editor icon.
+
 ## [0.7.1] - 2026-08-25
 
 ### Changed
